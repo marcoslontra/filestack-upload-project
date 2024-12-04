@@ -9,8 +9,38 @@
 <body>
   <h1>Upload de Documentos</h1>
   <form id="upload-form">
-    <label for="documents">Documentos Necessários</label>
-    <input type="file" id="documents" name="documents" accept="application/pdf" required />
+    <h2>Documentos Necessários</h2>
+
+    <label for="cpf_rg">CPF e RG</label>
+    <input type="file" id="cpf_rg" name="cpf_rg" accept="application/pdf" required />
+    <br /><br />
+
+    <label for="estado_civil">Comprovante de estado civil</label>
+    <input type="file" id="estado_civil" name="estado_civil" accept="application/pdf" required />
+    <br /><br />
+
+    <label for="certidao_nascimento">Certidão de nascimento menores de 18</label>
+    <input type="file" id="certidao_nascimento" name="certidao_nascimento" accept="application/pdf" />
+    <br /><br />
+
+    <label for="endereco">Comprovante de endereço atual</label>
+    <input type="file" id="endereco" name="endereco" accept="application/pdf" required />
+    <br /><br />
+
+    <label for="renda">Comprovante de renda</label>
+    <input type="file" id="renda" name="renda" accept="application/pdf" required />
+    <br /><br />
+
+    <label for="ir">Declaração imposto de renda</label>
+    <input type="file" id="ir" name="ir" accept="application/pdf" />
+    <br /><br />
+
+    <label for="carteira_trabalho">Carteira de trabalho</label>
+    <input type="file" id="carteira_trabalho" name="carteira_trabalho" accept="application/pdf" />
+    <br /><br />
+
+    <label for="fgts">Extrato FGTS</label>
+    <input type="file" id="fgts" name="fgts" accept="application/pdf" />
     <br /><br />
 
     <label for="nome">Nome Completo</label>
@@ -27,24 +57,39 @@
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
 
-    document.getElementById('documents').addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file && file.type === 'application/pdf') {
-        client.upload(file).then(result => {
-          console.log('Arquivo carregado com sucesso:', result);
-        }).catch(error => {
-          console.error('Erro no upload:', error);
-        });
-      }
-    });
-
-    document.getElementById('upload-form').addEventListener('submit', (event) => {
+    document.getElementById('upload-form').addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
+      const formData = new FormData(event.target);
+      const filesToUpload = [
+        'cpf_rg',
+        'estado_civil',
+        'certidao_nascimento',
+        'endereco',
+        'renda',
+        'ir',
+        'carteira_trabalho',
+        'fgts'
+      ];
 
-      // Enviar os dados para o servidor ou outro processamento aqui
+      const uploadResults = {};
+
+      for (const field of filesToUpload) {
+        const file = formData.get(field);
+        if (file && file.type === 'application/pdf') {
+          try {
+            const result = await client.upload(file);
+            uploadResults[field] = result.url;
+          } catch (error) {
+            console.error(`Erro no upload do campo ${field}:`, error);
+          }
+        }
+      }
+
+      const nome = formData.get('nome');
+      const telefone = formData.get('telefone');
+
+      console.log('Dados do formulário:', { nome, telefone, arquivos: uploadResults });
 
       alert('Formulário enviado com sucesso!');
     });
