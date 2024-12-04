@@ -21,7 +21,7 @@
 
         // Opções de configuração do File Picker
         const options = {
-            fromSources: ["local_file_system", "instagram", "facebook"],  // Fontes permitidas
+            fromSources: ["local_file_system"],  // Remover Instagram e Facebook para simplificar
             accept: ['image/*', 'application/pdf'],  // Tipos de arquivos aceitos (exemplo: imagens e PDFs)
             maxFiles: 3,  // Número máximo de arquivos permitidos
             imageMax: [800, 600],  // Tamanho máximo da imagem (exemplo: 800x600)
@@ -42,7 +42,11 @@
 
         // Configura o evento do botão para abrir o File Picker
         document.getElementById('uploadButton').addEventListener('click', () => {
-            client.picker(options).open();
+            try {
+                client.picker(options).open();
+            } catch (error) {
+                console.error("Erro ao abrir o picker:", error);
+            }
         });
     </script>
 </body>
