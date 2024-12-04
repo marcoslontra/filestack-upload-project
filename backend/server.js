@@ -24,7 +24,11 @@ app.post('/upload-pdf', (req, res) => {
             res.send({ fileUrl: result.url });
         })
         .catch(err => {
+<<<<<<< HEAD
             res.status(500).send(err);
+=======
+            res.status(500).send('Erro ao carregar arquivo no Filestack: ' + err);
+>>>>>>> f0d75a9245f0dbd38e931dc38e51b7bb4adfe9d3
         });
 });
 
@@ -32,6 +36,7 @@ app.post('/upload-pdf', (req, res) => {
 app.post('/upload-txt', (req, res) => {
     const { nome, telefone, dataNascimento, estadoCivil, possuiFilhos, rendaBruta, possuiImovel, trabalho3Anos } = req.body;
     
+<<<<<<< HEAD
     let txtData = `
         Nome Completo: ${nome}
         Telefone: ${telefone}
@@ -42,6 +47,16 @@ app.post('/upload-txt', (req, res) => {
         Possui Imóvel: ${possuiImovel}
         Trabalho de 3 anos: ${trabalho3Anos}
     `;
+=======
+    let txtData = `Nome Completo: ${nome}
+Telefone: ${telefone}
+Data de Nascimento: ${dataNascimento}
+Estado Civil: ${estadoCivil}
+Possui Filhos: ${possuiFilhos}
+Renda Bruta Casal: ${rendaBruta}
+Possui Imóvel: ${possuiImovel}
+Trabalho de 3 anos: ${trabalho3Anos}`;
+>>>>>>> f0d75a9245f0dbd38e931dc38e51b7bb4adfe9d3
     
     const blob = new Blob([txtData], { type: 'text/plain' });
     const file = new File([blob], "informacoes.txt", { type: 'text/plain' });
@@ -52,7 +67,11 @@ app.post('/upload-txt', (req, res) => {
             res.send({ fileUrl: result.url });
         })
         .catch(err => {
+<<<<<<< HEAD
             res.status(500).send(err);
+=======
+            res.status(500).send('Erro ao carregar arquivo no Filestack: ' + err);
+>>>>>>> f0d75a9245f0dbd38e931dc38e51b7bb4adfe9d3
         });
 });
 

@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload de Documentos e Formulário</title>
+<<<<<<< HEAD
     <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
+=======
+    <script src="https://cdn.filestackapi.com/filestack-js/3.35.4/filestack.min.js"></script>
+>>>>>>> f0d75a9245f0dbd38e931dc38e51b7bb4adfe9d3
 </head>
 <body>
     <h1>Upload de Documentos</h1>
@@ -57,7 +61,16 @@
                 },
                 onUploadCompleted: function(result) {
                     console.log(result); // Exibe o resultado após upload
+<<<<<<< HEAD
                     // Aqui você pode processar os arquivos, como salvar o URL de upload para o backend
+=======
+                    alert('Upload completo: ' + result.url); // Alerta com a URL do arquivo
+                    // Aqui você pode processar os arquivos, como salvar o URL de upload para o backend
+                },
+                onError: function(error) {
+                    console.error("Erro no upload", error);
+                    alert("Ocorreu um erro ao tentar fazer o upload do arquivo.");
+>>>>>>> f0d75a9245f0dbd38e931dc38e51b7bb4adfe9d3
                 }
             };
             client.picker(options).open();
@@ -79,6 +92,13 @@
             // Subir o arquivo TXT para o Filestack
             client.upload(file).then(result => {
                 console.log(result); // Exibe o resultado do upload do arquivo TXT
+<<<<<<< HEAD
+=======
+                alert("Informações enviadas com sucesso: " + result.url);
+            }).catch(err => {
+                console.error("Erro no envio das informações", err);
+                alert("Ocorreu um erro ao tentar enviar as informações.");
+>>>>>>> f0d75a9245f0dbd38e931dc38e51b7bb4adfe9d3
             });
         };
     </script>
