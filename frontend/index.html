@@ -54,6 +54,8 @@
     <button type="submit">Enviar</button>
   </form>
 
+  <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
+
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
 
@@ -71,6 +73,9 @@
         'carteira_trabalho',
         'fgts'
       ];
+
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = 'Enviando arquivos...';
 
       const uploadResults = {};
 
@@ -91,10 +96,12 @@
 
       console.log('Dados do formulário:', { nome, telefone, arquivos: uploadResults });
 
-      // Limpar campos do formulário após o envio
-      document.getElementById('upload-form').reset();
+      // Limpar apenas os campos de upload de arquivo
+      filesToUpload.forEach(field => {
+        document.getElementById(field).value = '';
+      });
 
-      alert('Formulário enviado com sucesso!');
+      statusMessage.textContent = 'Arquivos enviados com sucesso!';
     });
   </script>
 </body>
