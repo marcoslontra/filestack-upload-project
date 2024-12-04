@@ -21,10 +21,6 @@
 
         // Opções de configuração do File Picker
         const options = {
-            fromSources: ["local_file_system"],  // Remover Instagram e Facebook para simplificar
-            accept: ['image/*', 'application/pdf'],  // Tipos de arquivos aceitos (exemplo: imagens e PDFs)
-            maxFiles: 3,  // Número máximo de arquivos permitidos
-            imageMax: [800, 600],  // Tamanho máximo da imagem (exemplo: 800x600)
             onUploadDone: (response) => {
                 console.log('Arquivos carregados com sucesso:', response);
                 // Exibe a URL do arquivo carregado
