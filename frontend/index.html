@@ -1,53 +1,59 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload de Documentos</title>
-  <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
-</head>
-<body>
-  <h1>Upload de Documentos</h1>
-  <form id="upload-form">
-    <label for="documents">Documentos Necessários</label>
-    <input type="file" id="documents" name="documents" accept="application/pdf" required />
-    <br /><br />
+const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave de API do Filestack
 
-    <label for="nome">Nome Completo</label>
-    <input type="text" id="nome" name="nome" required />
-    <br /><br />
+document.getElementById('upload-form').addEventListener('submit', (event) => {
+    event.preventDefault(); // Impede o envio padrão do formulário
 
-    <label for="telefone">Telefone</label>
-    <input type="tel" id="telefone" name="telefone" required />
-    <br /><br />
+    // Enviar arquivos ao Filestack
+    const files = [
+        'documento-analise',
+        'cpf-rg',
+        'estado-civil',
+        'certidao-nascimento',
+        'comprovante-endereco',
+        'comprovante-renda',
+        'declaracao-imposto',
+        'carteira-trabalho',
+        'extrato-fgts'
+    ];
 
-    <button type="submit">Enviar</button>
-  </form>
+    const uploadedFiles = [];
 
-  <script>
-    const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
-
-    document.getElementById('documents').addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file && file.type === 'application/pdf') {
-        client.upload(file).then(result => {
-          console.log('Arquivo carregado com sucesso:', result);
-        }).catch(error => {
-          console.error('Erro no upload:', error);
-        });
-      }
+    files.forEach(fileId => {
+        const fileInput = document.getElementById(fileId);
+        const file = fileInput.files[0];
+        
+        if (file) {
+            client.upload(file).then(result => {
+                uploadedFiles.push(result);
+                console.log(`Arquivo ${fileId} enviado com sucesso:`, result);
+            }).catch(error => {
+                console.error(`Erro ao enviar o arquivo ${fileId}:`, error);
+            });
+        }
     });
 
-    document.getElementById('upload-form').addEventListener('submit', (event) => {
-      event.preventDefault();
+    // Coletar as informações do formulário
+    const nome = document.getElementById('nome').value;
+    const telefone = document.getElementById('telefone').value;
+    const dataNascimento = document.getElementById('data-nascimento').value;
+    const estadoCivil = document.getElementById('estado-civil').value;
+    const possuiFilhos = document.getElementById('possui-filhos').value;
+    const rendaBruta = document.getElementById('renda-bruta').value;
+    const possuiImovel = document.getElementById('possui-imovel').value;
+    const anosTrabalho = document.getElementById('anos-trabalho').value;
 
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-
-      // Enviar os dados para o servidor ou outro processamento aqui
-
-      alert('Formulário enviado com sucesso!');
+    // Aqui você pode enviar as informações pessoais e os arquivos para o backend
+    console.log({
+        nome,
+        telefone,
+        dataNascimento,
+        estadoCivil,
+        possuiFilhos,
+        rendaBruta,
+        possuiImovel,
+        anosTrabalho,
+        uploadedFiles
     });
-  </script>
-</body>
-</html>
+
+    alert('Formulário enviado com sucesso!');
+});
