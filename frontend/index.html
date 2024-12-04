@@ -56,8 +56,9 @@
       event.preventDefault();
 
       // Verificar se já está em andamento
-      if (isUploading) return;
-      isUploading = true;
+      if (isUploading) return; // Bloqueia novos envios enquanto o upload está em andamento
+      isUploading = true; // Marca que o upload está em andamento
+      document.getElementById('submit-button').disabled = true; // Desabilita o botão "Enviar" enquanto o upload está em andamento
 
       const statusMessage = document.getElementById('status-message');
       statusMessage.textContent = 'Enviando arquivos...';
@@ -94,7 +95,10 @@
       });
 
       statusMessage.textContent = 'Arquivos enviados com sucesso!';
-      isUploading = false; // Permitir novos envios
+
+      // Reabilitar o botão "Enviar" após o upload
+      isUploading = false;
+      document.getElementById('submit-button').disabled = false;
     });
   </script>
 </body>
