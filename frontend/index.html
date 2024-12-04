@@ -1,24 +1,49 @@
-<!-- frontend/index.html -->
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload para o Filestack</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Upload de Arquivos - Filestack</title>
+    <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Envio de Documentos</h1>
-        <form id="uploadForm">
-            <label for="fileUpload">Selecione um arquivo para upload:</label>
-            <input type="file" id="fileUpload" name="file" required>
-            <button type="submit">Enviar</button>
-        </form>
-        <div id="result"></div>
-    </div>
+    <h1>Selecione seus arquivos para upload</h1>
+    
+    <!-- Botão para abrir o File Picker -->
+    <button id="uploadButton">Escolher Arquivos</button>
+    
+    <!-- Exibição de resultados -->
+    <div id="result"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/filestack-js@3.0.0/dist/filestack.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Inicializa o cliente Filestack com a chave da API
+        const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave Filestack
+
+        // Opções de configuração do File Picker
+        const options = {
+            fromSources: ["local_file_system", "instagram", "facebook"],  // Fontes permitidas
+            accept: ['image/*', 'application/pdf'],  // Tipos de arquivos aceitos (exemplo: imagens e PDFs)
+            maxFiles: 3,  // Número máximo de arquivos permitidos
+            imageMax: [800, 600],  // Tamanho máximo da imagem (exemplo: 800x600)
+            onUploadDone: (response) => {
+                console.log('Arquivos carregados com sucesso:', response);
+                // Exibe a URL do arquivo carregado
+                const fileUrl = response.filesUploaded[0].url;
+                document.getElementById('result').innerHTML = `
+                    <p style="color: green;">Arquivo enviado com sucesso!</p>
+                    <p>URL do arquivo: <a href="${fileUrl}" target="_blank">Visualizar Arquivo</a></p>
+                `;
+            },
+            onUploadError: (error) => {
+                console.error('Erro ao carregar arquivos:', error);
+                document.getElementById('result').innerHTML = `<p style="color: red;">Erro ao enviar o arquivo: ${error.message}</p>`;
+            }
+        };
+
+        // Configura o evento do botão para abrir o File Picker
+        document.getElementById('uploadButton').addEventListener('click', () => {
+            client.picker(options).open();
+        });
+    </script>
 </body>
 </html>
