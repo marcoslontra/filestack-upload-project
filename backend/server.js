@@ -1,6 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
+const bodyParser = require('body-parser');
 
 // Configuração do Filestack
 const filestack = require('filestack-js');
@@ -9,6 +10,7 @@ const client = filestack.init('ApgANrOfTOWJBXY2mERX1z');
 // Configurações de middleware
 app.use(express.static('public'));
 app.use(fileUpload());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Rota para receber o upload do PDF
 app.post('/upload-pdf', (req, res) => {
