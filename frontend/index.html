@@ -72,6 +72,11 @@
       background-color: #c0392b; /* Tom mais escuro de vermelho */
     }
 
+    button:disabled {
+      background-color: #bdc3c7;
+      cursor: not-allowed;
+    }
+
     /* Design Responsivo */
     @media (max-width: 768px) {
       h1 {
@@ -126,11 +131,7 @@
     <label for="extrato-fgts">Extrato FGTS:</label>
     <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
 
-    <button type="submit">Enviar Documentos</button>
-  </form>
-
-  <!-- Formulário de Informações Pessoais -->
-  <form id="info-form">
+    <!-- Formulário de Informações Pessoais -->
     <label for="nome">Nome Completo:</label>
     <input type="text" id="nome" name="nome" />
 
@@ -169,21 +170,25 @@
       <option value="nao">Não</option>
     </select>
 
-    <button type="submit">Enviar Informações Pessoais</button>
+    <!-- Botão de Envio -->
+    <button type="submit" id="submit-button" disabled>Enviar Arquivos</button>
   </form>
 
   <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
+    const submitButton = document.getElementById('submit-button');
+    const uploadForm = document.getElementById('upload-form');
+
+    // Função para habilitar o botão após upload
+    function enableSubmitButton() {
+      submitButton.disabled = false;
+    }
 
     // Enviar informações pessoais como arquivo de texto
-    document.getElementById('info-form').addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.target);
-
-      // Criando o conteúdo do arquivo de texto
+    async function uploadInfo() {
+      const formData = new FormData(uploadForm);
       let textContent = '';
       textContent += `Nome Completo: ${formData.get('nome')}\n`;
       textContent += `Telefone: ${formData.get('telefone')}\n`;
@@ -194,43 +199,47 @@
       textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
       textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
 
-      // Criando um Blob com os dados em texto
       const blob = new Blob([textContent], { type: 'text/plain' });
-
-      // Criando um arquivo a partir do Blob
       const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
 
-      // Subir o arquivo de texto para Filestack
-      client.upload(file)
-        .then(result => {
-          document.getElementById('status-message').textContent = 'Informações Pessoais enviadas com sucesso!';
-          console.log('Informações Pessoais enviadas para Filestack:', result);
-        })
-        .catch(error => {
-          document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
-          console.error('Erro no upload das informações pessoais:', error);
-        });
-    });
+      try {
+        await client.upload(file);
+      } catch (error) {
+        console.error('Erro ao enviar as informações pessoais:', error);
+        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
+        return;
+      }
+    }
 
     // Enviar documentos PDF
-    document.getElementById('upload-form').addEventListener('submit', async (event) => {
+    uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
+      submitButton.disabled = true; // Desabilita o botão enquanto o upload está em andamento
 
-      const formData = new FormData(event.target);
+      // Enviar as informações pessoais
+      await uploadInfo();
 
+      // Enviar os documentos PDF
+      const formData = new FormData(uploadForm);
+      const files = [];
       for (const [key, file] of formData.entries()) {
         if (file instanceof File) {
-          client.upload(file)
-            .then(result => {
-              document.getElementById('status-message').textContent = 'Documento enviado com sucesso!';
-              console.log(`Documento ${key} enviado para Filestack:`, result);
-            })
-            .catch(error => {
-              document.getElementById('status-message').textContent = `Erro ao enviar o documento ${key}.`;
-              console.error(`Erro no upload do documento ${key}:`, error);
-            });
+          files.push(file);
         }
       }
+
+      // Envia todos os arquivos para Filestack
+      for (const file of files) {
+        try {
+          await client.upload(file);
+        } catch (error) {
+          console.error(`Erro no upload do arquivo ${file.name}:`, error);
+        }
+      }
+
+      // Habilita o botão após o upload
+      enableSubmitButton();
+      document.getElementById('status-message').textContent = 'Arquivos enviados com sucesso!';
     });
   </script>
 </body>
