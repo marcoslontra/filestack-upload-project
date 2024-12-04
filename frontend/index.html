@@ -160,10 +160,13 @@
       textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
 
       // Criando um Blob com os dados em texto
-      const file = new Blob([textContent], { type: 'text/plain' });
+      const blob = new Blob([textContent], { type: 'text/plain' });
+
+      // Criando um arquivo a partir do Blob
+      const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
 
       // Subir o arquivo para Filestack
-      client.upload(file, { filename: 'informacoes_pessoais.txt' })
+      client.upload(file)
         .then(result => {
           document.getElementById('status-message').textContent = 'Arquivo enviado com sucesso!';
           console.log('Arquivo enviado para Filestack:', result);
