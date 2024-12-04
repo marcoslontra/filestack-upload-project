@@ -19,7 +19,7 @@ app.use(cors({
 
 // Rota para fornecer a chave do Filestack
 app.get('/api/filestack-key', (req, res) => {
-    // Retorne a chave Filestack diretamente ou de um arquivo de ambiente
+    // Retorne a chave Filestack diretamente
     res.json({ key: 'ApgANrOfTOWJBXY2mERX1z' });  // Sua chave Filestack
 });
 
