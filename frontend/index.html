@@ -4,106 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload de Documentos</title>
-  <link rel="stylesheet" href="style.css">
+  <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 </head>
 <body>
-  <h1>Documentos Necessários</h1>
+  <h1>Upload de Documentos</h1>
   <form id="upload-form">
-    
-    <!-- Documento: CPF e RG -->
-    <div>
-      <label for="cpf-rg">CPF e RG:</label>
-      <input type="file" id="cpf-rg" accept="application/pdf">
-    </div>
+    <label for="documents">Documentos Necessários</label>
+    <input type="file" id="documents" name="documents" accept="application/pdf" required />
+    <br /><br />
 
-    <!-- Documento: Comprovante de Estado Civil -->
-    <div>
-      <label for="estado-civil">Comprovante de Estado Civil:</label>
-      <input type="file" id="estado-civil" accept="application/pdf">
-    </div>
+    <label for="nome">Nome Completo</label>
+    <input type="text" id="nome" name="nome" required />
+    <br /><br />
 
-    <!-- Documento: Certidão de Nascimento Menores de 18 -->
-    <div>
-      <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
-      <input type="file" id="certidao-nascimento" accept="application/pdf">
-    </div>
+    <label for="telefone">Telefone</label>
+    <input type="tel" id="telefone" name="telefone" required />
+    <br /><br />
 
-    <!-- Documento: Comprovante de Endereço Atual -->
-    <div>
-      <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
-      <input type="file" id="comprovante-endereco" accept="application/pdf">
-    </div>
-
-    <!-- Documento: Comprovante de Renda -->
-    <div>
-      <label for="comprovante-renda">Comprovante de Renda:</label>
-      <input type="file" id="comprovante-renda" accept="application/pdf">
-    </div>
-
-    <!-- Documento: Declaração Imposto de Renda -->
-    <div>
-      <label for="declaracao-imposto">Declaração Imposto de Renda:</label>
-      <input type="file" id="declaracao-imposto" accept="application/pdf">
-    </div>
-
-    <!-- Documento: Carteira de Trabalho -->
-    <div>
-      <label for="carteira-trabalho">Carteira de Trabalho:</label>
-      <input type="file" id="carteira-trabalho" accept="application/pdf">
-    </div>
-
-    <!-- Documento: Extrato FGTS -->
-    <div>
-      <label for="extrato-fgts">Extrato FGTS:</label>
-      <input type="file" id="extrato-fgts" accept="application/pdf">
-    </div>
-
-    <!-- Formulário de Informações Pessoais -->
-    <h2>Informações Pessoais</h2>
-    <div>
-      <label for="nome">Nome completo:</label>
-      <input type="text" id="nome" required>
-    </div>
-
-    <div>
-      <label for="telefone">Telefone:</label>
-      <input type="tel" id="telefone" required>
-    </div>
-
-    <div>
-      <label for="nascimento">Data de Nascimento:</label>
-      <input type="date" id="nascimento" required>
-    </div>
-
-    <div>
-      <label for="estado-civil-info">Estado civil:</label>
-      <input type="text" id="estado-civil-info" required>
-    </div>
-
-    <div>
-      <label for="filhos">Possui filhos:</label>
-      <input type="text" id="filhos" required>
-    </div>
-
-    <div>
-      <label for="renda">Renda bruta casal:</label>
-      <input type="text" id="renda" required>
-    </div>
-
-    <div>
-      <label for="imovel">Possui imóvel:</label>
-      <input type="text" id="imovel" required>
-    </div>
-
-    <div>
-      <label for="trabalho">Possui 3 anos de trabalho registrados:</label>
-      <input type="text" id="trabalho" required>
-    </div>
-
-    <!-- Botão de Enviar -->
     <button type="submit">Enviar</button>
   </form>
 
-  <script src="app.js"></script>
+  <script>
+    const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
+
+    document.getElementById('documents').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file && file.type === 'application/pdf') {
+        client.upload(file).then(result => {
+          console.log('Arquivo carregado com sucesso:', result);
+        }).catch(error => {
+          console.error('Erro no upload:', error);
+        });
+      }
+    });
+
+    document.getElementById('upload-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+
+      // Enviar os dados para o servidor ou outro processamento aqui
+
+      alert('Formulário enviado com sucesso!');
+    });
+  </script>
 </body>
 </html>
