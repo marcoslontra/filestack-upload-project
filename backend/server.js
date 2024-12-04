@@ -1,23 +1,34 @@
-// backend/server.js
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
+// Configuração do servidor Express
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Permitir qualquer origem durante o desenvolvimento
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: 'GET,POST',
+    allowedHeaders: 'Content-Type'
+}));
 
-// Servir arquivos estáticos do frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Rota para retornar a chave da API do Filestack
+// Rota para fornecer a chave do Filestack
 app.get('/api/filestack-key', (req, res) => {
-  res.json({ apiKey: 'ApgANrOfTOWJBXY2mERX1z' });
+    // Retorne a chave Filestack diretamente ou de um arquivo de ambiente
+    res.json({ key: 'ApgANrOfTOWJBXY2mERX1z' });
 });
 
+// Rota de exemplo para upload ou outras operações
+app.post('/upload', (req, res) => {
+    // Lógica de upload de arquivos
+    res.send('Upload feito com sucesso!');
+});
+
+// Inicia o servidor
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+    console.log(`Servidor rodando na porta ${port}`);
 });
