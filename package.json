@@ -1,0 +1,16 @@
+// package.json
+{
+  "name": "filestack-upload-project",
+  "version": "1.0.0",
+  "description": "Upload de arquivos usando Filestack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  },
+  "license": "ISC"
+}
