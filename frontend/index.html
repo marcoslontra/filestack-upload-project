@@ -100,31 +100,31 @@
   <!-- Campos de upload de documentos PDF -->
   <form id="upload-form">
     <label for="cpf">CPF:</label>
-    <input type="file" id="cpf" name="cpf" accept="application/pdf" required />
+    <input type="file" id="cpf" name="cpf" accept="application/pdf" />
 
     <label for="rg">RG:</label>
-    <input type="file" id="rg" name="rg" accept="application/pdf" required />
+    <input type="file" id="rg" name="rg" accept="application/pdf" />
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
-    <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" required />
+    <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
 
     <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
-    <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" required />
+    <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
 
     <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
-    <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" required />
+    <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
 
     <label for="comprovante-renda">Comprovante de Renda:</label>
-    <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" required />
+    <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
 
     <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
-    <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" required />
+    <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
 
     <label for="carteira-trabalho">Carteira de Trabalho:</label>
-    <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" required />
+    <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
 
     <label for="extrato-fgts">Extrato FGTS:</label>
-    <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" required />
+    <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
 
     <button type="submit">Enviar Documentos</button>
   </form>
@@ -132,16 +132,16 @@
   <!-- Formulário de Informações Pessoais -->
   <form id="info-form">
     <label for="nome">Nome Completo:</label>
-    <input type="text" id="nome" name="nome" required />
+    <input type="text" id="nome" name="nome" />
 
     <label for="telefone">Telefone:</label>
-    <input type="tel" id="telefone" name="telefone" required />
+    <input type="tel" id="telefone" name="telefone" />
 
     <label for="data-nascimento">Data de Nascimento:</label>
-    <input type="date" id="data-nascimento" name="data-nascimento" required />
+    <input type="date" id="data-nascimento" name="data-nascimento" />
 
     <label for="estado-civil">Estado Civil:</label>
-    <select id="estado-civil" name="estado-civil" required>
+    <select id="estado-civil" name="estado-civil">
       <option value="solteiro">Solteiro</option>
       <option value="casado">Casado</option>
       <option value="divorciado">Divorciado</option>
@@ -149,22 +149,22 @@
     </select>
 
     <label for="possui-filhos">Possui Filhos:</label>
-    <select id="possui-filhos" name="possui-filhos" required>
+    <select id="possui-filhos" name="possui-filhos">
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
     <label for="renda-bruta">Renda Bruta Casal (R$):</label>
-    <input type="number" id="renda-bruta" name="renda-bruta" required />
+    <input type="number" id="renda-bruta" name="renda-bruta" />
 
     <label for="possui-imovel">Possui Imóvel:</label>
-    <select id="possui-imovel" name="possui-imovel" required>
+    <select id="possui-imovel" name="possui-imovel">
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
     <label for="anos-trabalho">Possui 3 anos de trabalho registrados em carteira de trabalho:</label>
-    <select id="anos-trabalho" name="anos-trabalho" required>
+    <select id="anos-trabalho" name="anos-trabalho">
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
@@ -203,13 +203,34 @@
       // Subir o arquivo de texto para Filestack
       client.upload(file)
         .then(result => {
-          document.getElementById('status-message').textContent = 'Arquivo enviado com sucesso!';
-          console.log('Arquivo enviado para Filestack:', result);
+          document.getElementById('status-message').textContent = 'Informações Pessoais enviadas com sucesso!';
+          console.log('Informações Pessoais enviadas para Filestack:', result);
         })
         .catch(error => {
-          document.getElementById('status-message').textContent = 'Erro ao enviar o arquivo.';
-          console.error('Erro no upload:', error);
+          document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
+          console.error('Erro no upload das informações pessoais:', error);
         });
+    });
+
+    // Enviar documentos PDF
+    document.getElementById('upload-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+
+      for (const [key, file] of formData.entries()) {
+        if (file instanceof File) {
+          client.upload(file)
+            .then(result => {
+              document.getElementById('status-message').textContent = 'Documento enviado com sucesso!';
+              console.log(`Documento ${key} enviado para Filestack:`, result);
+            })
+            .catch(error => {
+              document.getElementById('status-message').textContent = `Erro ao enviar o documento ${key}.`;
+              console.error(`Erro no upload do documento ${key}:`, error);
+            });
+        }
+      }
     });
   </script>
 </body>
