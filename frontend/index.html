@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload de Documentos</title>
+  <title>Formulário de Informações Pessoais</title>
   <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
   <style>
     /* Reset básico */
@@ -24,17 +24,11 @@
     h1 {
       text-align: center;
       color: #333;
-      margin-bottom: 20px; /* Diminuir a margem inferior */
-    }
-
-    h2 {
-      margin-top: 40px; /* Diminuir o espaço entre o título e o primeiro campo */
       margin-bottom: 20px;
-      color: #555;
     }
 
     /* Formulário */
-    #upload-form {
+    #info-form {
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
@@ -51,7 +45,7 @@
     }
 
     /* Estilo dos inputs */
-    input[type="file"] {
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
@@ -78,31 +72,18 @@
       background-color: #c0392b; /* Tom mais escuro de vermelho */
     }
 
-    button[type="submit"]:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-
-    /* Estilo da mensagem de status */
-    #status-message {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
     /* Design Responsivo */
     @media (max-width: 768px) {
       h1 {
         font-size: 24px;
       }
 
-      #upload-form {
+      #info-form {
         padding: 15px;
         width: 90%;
       }
 
-      input[type="file"] {
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
         padding: 8px;
       }
 
@@ -114,98 +95,84 @@
   </style>
 </head>
 <body>
-  <h1>Upload de Documentos</h1>
-  <form id="upload-form">
-    <h2>Documentos Necessários</h2>
+  <h1>Formulário de Informações Pessoais</h1>
+  <form id="info-form">
+    <label for="nome">Nome Completo:</label>
+    <input type="text" id="nome" name="nome" required />
 
-    <label for="cpf_rg">CPF e RG</label>
-    <input type="file" id="cpf_rg" name="cpf_rg" accept="application/pdf" />
-    <br /><br />
+    <label for="telefone">Telefone:</label>
+    <input type="tel" id="telefone" name="telefone" required />
 
-    <label for="estado_civil">Comprovante de estado civil</label>
-    <input type="file" id="estado_civil" name="estado_civil" accept="application/pdf" />
-    <br /><br />
+    <label for="data-nascimento">Data de Nascimento:</label>
+    <input type="date" id="data-nascimento" name="data-nascimento" required />
 
-    <label for="certidao_nascimento">Certidão de nascimento menores de 18</label>
-    <input type="file" id="certidao_nascimento" name="certidao_nascimento" accept="application/pdf" />
-    <br /><br />
+    <label for="estado-civil">Estado Civil:</label>
+    <select id="estado-civil" name="estado-civil" required>
+      <option value="solteiro">Solteiro</option>
+      <option value="casado">Casado</option>
+      <option value="divorciado">Divorciado</option>
+      <option value="viuvo">Viúvo</option>
+    </select>
 
-    <label for="endereco">Comprovante de endereço atual</label>
-    <input type="file" id="endereco" name="endereco" accept="application/pdf" />
-    <br /><br />
+    <label for="possui-filhos">Possui Filhos:</label>
+    <select id="possui-filhos" name="possui-filhos" required>
+      <option value="sim">Sim</option>
+      <option value="nao">Não</option>
+    </select>
 
-    <label for="renda">Comprovante de renda</label>
-    <input type="file" id="renda" name="renda" accept="application/pdf" />
-    <br /><br />
+    <label for="renda-bruta">Renda Bruta Casal (R$):</label>
+    <input type="number" id="renda-bruta" name="renda-bruta" required />
 
-    <label for="ir">Declaração imposto de renda</label>
-    <input type="file" id="ir" name="ir" accept="application/pdf" />
-    <br /><br />
+    <label for="possui-imovel">Possui Imóvel:</label>
+    <select id="possui-imovel" name="possui-imovel" required>
+      <option value="sim">Sim</option>
+      <option value="nao">Não</option>
+    </select>
 
-    <label for="carteira_trabalho">Carteira de trabalho</label>
-    <input type="file" id="carteira_trabalho" name="carteira_trabalho" accept="application/pdf" />
-    <br /><br />
+    <label for="anos-trabalho">Possui 3 anos de trabalho registrados em carteira de trabalho:</label>
+    <select id="anos-trabalho" name="anos-trabalho" required>
+      <option value="sim">Sim</option>
+      <option value="nao">Não</option>
+    </select>
 
-    <label for="fgts">Extrato FGTS</label>
-    <input type="file" id="fgts" name="fgts" accept="application/pdf" />
-    <br /><br />
-
-    <button type="submit" id="submit-button">Enviar</button>
+    <button type="submit">Enviar</button>
   </form>
 
   <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
-    let isUploading = false; // Variável para controlar o estado do upload
 
-    document.getElementById('upload-form').addEventListener('submit', async (event) => {
+    document.getElementById('info-form').addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      // Verificar se já está em andamento
-      if (isUploading) return; // Bloqueia novos envios enquanto o upload está em andamento
-      isUploading = true; // Marca que o upload está em andamento
-      document.getElementById('submit-button').disabled = true; // Desabilita o botão "Enviar" enquanto o upload está em andamento
-
-      const statusMessage = document.getElementById('status-message');
-      statusMessage.textContent = 'Enviando arquivos...';
-
       const formData = new FormData(event.target);
-      const filesToUpload = [
-        'cpf_rg',
-        'estado_civil',
-        'certidao_nascimento',
-        'endereco',
-        'renda',
-        'ir',
-        'carteira_trabalho',
-        'fgts'
-      ];
 
-      const uploadResults = {};
+      // Criando o conteúdo do arquivo de texto
+      let textContent = '';
+      textContent += `Nome Completo: ${formData.get('nome')}\n`;
+      textContent += `Telefone: ${formData.get('telefone')}\n`;
+      textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
+      textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
+      textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
+      textContent += `Renda Bruta Casal: R$ ${formData.get('renda-bruta')}\n`;
+      textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
+      textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
 
-      for (const field of filesToUpload) {
-        const file = formData.get(field);
-        if (file && file.type === 'application/pdf') {
-          try {
-            const result = await client.upload(file);
-            uploadResults[field] = result.url;
-          } catch (error) {
-            console.error(`Erro no upload do campo ${field}:`, error);
-          }
-        }
-      }
+      // Criando um Blob com os dados em texto
+      const file = new Blob([textContent], { type: 'text/plain' });
+      const fileName = 'informacoes_pessoais.txt';
 
-      // Limpar campos de upload
-      filesToUpload.forEach(field => {
-        document.getElementById(field).value = '';
-      });
-
-      statusMessage.textContent = 'Arquivos enviados com sucesso!';
-
-      // Reabilitar o botão "Enviar" após o upload
-      isUploading = false;
-      document.getElementById('submit-button').disabled = false;
+      // Carregar o arquivo de texto no Filestack
+      client.upload(file, { filename: fileName })
+        .then(result => {
+          document.getElementById('status-message').textContent = 'Arquivo enviado com sucesso!';
+          console.log('Arquivo enviado para Filestack:', result);
+        })
+        .catch(error => {
+          document.getElementById('status-message').textContent = 'Erro ao enviar o arquivo.';
+          console.error('Erro no upload:', error);
+        });
     });
   </script>
 </body>
