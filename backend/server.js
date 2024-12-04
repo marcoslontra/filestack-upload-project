@@ -1,7 +1,6 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
-const bodyParser = require('body-parser');
 
 // Configuração do Filestack
 const filestack = require('filestack-js');
@@ -10,7 +9,6 @@ const client = filestack.init('ApgANrOfTOWJBXY2mERX1z');
 // Configurações de middleware
 app.use(express.static('public'));
 app.use(fileUpload());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // Rota para receber o upload do PDF
 app.post('/upload-pdf', (req, res) => {
@@ -26,7 +24,7 @@ app.post('/upload-pdf', (req, res) => {
             res.send({ fileUrl: result.url });
         })
         .catch(err => {
-            res.status(500).send(err);
+            res.status(500).send('Erro ao carregar arquivo no Filestack: ' + err);
         });
 });
 
@@ -34,16 +32,14 @@ app.post('/upload-pdf', (req, res) => {
 app.post('/upload-txt', (req, res) => {
     const { nome, telefone, dataNascimento, estadoCivil, possuiFilhos, rendaBruta, possuiImovel, trabalho3Anos } = req.body;
     
-    let txtData = `
-        Nome Completo: ${nome}
-        Telefone: ${telefone}
-        Data de Nascimento: ${dataNascimento}
-        Estado Civil: ${estadoCivil}
-        Possui Filhos: ${possuiFilhos}
-        Renda Bruta Casal: ${rendaBruta}
-        Possui Imóvel: ${possuiImovel}
-        Trabalho de 3 anos: ${trabalho3Anos}
-    `;
+    let txtData = `Nome Completo: ${nome}
+Telefone: ${telefone}
+Data de Nascimento: ${dataNascimento}
+Estado Civil: ${estadoCivil}
+Possui Filhos: ${possuiFilhos}
+Renda Bruta Casal: ${rendaBruta}
+Possui Imóvel: ${possuiImovel}
+Trabalho de 3 anos: ${trabalho3Anos}`;
     
     const blob = new Blob([txtData], { type: 'text/plain' });
     const file = new File([blob], "informacoes.txt", { type: 'text/plain' });
@@ -54,7 +50,7 @@ app.post('/upload-txt', (req, res) => {
             res.send({ fileUrl: result.url });
         })
         .catch(err => {
-            res.status(500).send(err);
+            res.status(500).send('Erro ao carregar arquivo no Filestack: ' + err);
         });
 });
 
