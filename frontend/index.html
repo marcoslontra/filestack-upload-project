@@ -163,8 +163,11 @@
       const file = new Blob([textContent], { type: 'text/plain' });
       const fileName = 'informacoes_pessoais.txt';
 
-      // Carregar o arquivo de texto no Filestack
-      client.upload(file, { filename: fileName })
+      // Criando uma URL de objeto para o arquivo Blob
+      const fileURL = URL.createObjectURL(file);
+
+      // Subir o arquivo para Filestack
+      client.upload(fileURL, { filename: fileName })
         .then(result => {
           document.getElementById('status-message').textContent = 'Arquivo enviado com sucesso!';
           console.log('Arquivo enviado para Filestack:', result);
