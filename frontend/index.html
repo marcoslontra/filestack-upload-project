@@ -1,24 +1,86 @@
-<!-- frontend/index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload para o Filestack</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Upload de Documentos e Formulário</title>
+    <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Envio de Documentos</h1>
-        <form id="uploadForm">
-            <label for="fileUpload">Selecione um arquivo para upload:</label>
-            <input type="file" id="fileUpload" name="file" required>
-            <button type="submit">Enviar</button>
-        </form>
-        <div id="result"></div>
-    </div>
+    <h1>Upload de Documentos</h1>
 
-    <script src="https://cdn.jsdelivr.net/npm/filestack-js@3.0.0/dist/filestack.min.js"></script>
-    <script src="script.js"></script>
+    <!-- Formulário de Informações -->
+    <form id="informacoes-form">
+        <h2>Informações Necessárias</h2>
+        <label for="nome">Nome Completo:</label><br>
+        <input type="text" id="nome" name="nome"><br><br>
+        <label for="telefone">Telefone:</label><br>
+        <input type="text" id="telefone" name="telefone"><br><br>
+        <label for="data-nascimento">Data de Nascimento:</label><br>
+        <input type="date" id="data-nascimento" name="data-nascimento"><br><br>
+        <label for="estado-civil">Estado Civil:</label><br>
+        <input type="text" id="estado-civil" name="estado-civil"><br><br>
+        <label for="possui-filhos">Possui Filhos:</label><br>
+        <select id="possui-filhos" name="possui-filhos">
+            <option value="sim">Sim</option>
+            <option value="não">Não</option>
+        </select><br><br>
+        <label for="renda-bruta">Renda Bruta Casal (R$):</label><br>
+        <input type="text" id="renda-bruta" name="renda-bruta"><br><br>
+        <label for="possui-imovel">Possui Imóvel:</label><br>
+        <select id="possui-imovel" name="possui-imovel">
+            <option value="sim">Sim</option>
+            <option value="não">Não</option>
+        </select><br><br>
+        <label for="trabalho-3-anos">Possui 3 anos de trabalho somando registrados em carteira de trabalho:</label><br>
+        <select id="trabalho-3-anos" name="trabalho-3-anos">
+            <option value="sim">Sim</option>
+            <option value="não">Não</option>
+        </select><br><br>
+    </form>
+
+    <h2>Documentos para Análise</h2>
+    <button id="upload-btn">Selecionar Documentos (PDF)</button>
+
+    <script>
+        const client = filestack.init("ApgANrOfTOWJBXY2mERX1z");
+
+        // Configuração do picker Filestack para aceitar apenas PDFs
+        document.getElementById('upload-btn').onclick = function() {
+            const options = {
+                accept: ['application/pdf'],
+                onFileSelected: (file) => {
+                    if (file.size > 1000 * 1000 * 5) {  // Limite de 5MB para arquivos PDF
+                        alert("Arquivo muito grande. Selecione um PDF menor que 5MB.");
+                        return false; // Impede o envio
+                    }
+                },
+                onUploadCompleted: function(result) {
+                    console.log(result); // Exibe o resultado após upload
+                    // Aqui você pode processar os arquivos, como salvar o URL de upload para o backend
+                }
+            };
+            client.picker(options).open();
+        };
+
+        // Enviar o formulário como TXT para o Filestack
+        document.getElementById('informacoes-form').onsubmit = function(event) {
+            event.preventDefault(); // Evita o envio do formulário padrão
+
+            const formData = new FormData(this);
+            let txtData = '';
+            formData.forEach((value, key) => {
+                txtData += `${key}: ${value}\n`;
+            });
+
+            const blob = new Blob([txtData], { type: 'text/plain' });
+            const file = new File([blob], "informacoes.txt", { type: 'text/plain' });
+
+            // Subir o arquivo TXT para o Filestack
+            client.upload(file).then(result => {
+                console.log(result); // Exibe o resultado do upload do arquivo TXT
+            });
+        };
+    </script>
 </body>
 </html>
