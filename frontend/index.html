@@ -43,24 +43,24 @@
     <input type="file" id="fgts" name="fgts" accept="application/pdf" />
     <br /><br />
 
-    <label for="nome">Nome Completo</label>
-    <input type="text" id="nome" name="nome" />
-    <br /><br />
-
-    <label for="telefone">Telefone</label>
-    <input type="tel" id="telefone" name="telefone" />
-    <br /><br />
-
-    <button type="submit">Enviar</button>
+    <button type="submit" id="submit-button">Enviar</button>
   </form>
 
   <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
+    let isUploading = false; // Variável para controlar o estado do upload
 
     document.getElementById('upload-form').addEventListener('submit', async (event) => {
       event.preventDefault();
+
+      // Verificar se já está em andamento
+      if (isUploading) return;
+      isUploading = true;
+
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = 'Enviando arquivos...';
 
       const formData = new FormData(event.target);
       const filesToUpload = [
@@ -73,9 +73,6 @@
         'carteira_trabalho',
         'fgts'
       ];
-
-      const statusMessage = document.getElementById('status-message');
-      statusMessage.textContent = 'Enviando arquivos...';
 
       const uploadResults = {};
 
@@ -91,17 +88,13 @@
         }
       }
 
-      const nome = formData.get('nome');
-      const telefone = formData.get('telefone');
-
-      console.log('Dados do formulário:', { nome, telefone, arquivos: uploadResults });
-
-      // Limpar apenas os campos de upload de arquivo
+      // Limpar campos de upload
       filesToUpload.forEach(field => {
         document.getElementById(field).value = '';
       });
 
       statusMessage.textContent = 'Arquivos enviados com sucesso!';
+      isUploading = false; // Permitir novos envios
     });
   </script>
 </body>
