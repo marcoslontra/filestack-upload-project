@@ -1,15 +1,15 @@
 {
   "name": "filestack-upload-project",
   "version": "1.0.0",
-  "description": "Upload de arquivos usando Filestack",
+  "description": "Upload de arquivos e envio de informações ao Filestack",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.21.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5"
-  },
-  "license": "ISC"
+    "express": "^4.18.2",
+    "express-fileupload": "^1.2.1",
+    "filestack-js": "^3.7.1",
+    "tslib": "^2.8.1"
+  }
 }
