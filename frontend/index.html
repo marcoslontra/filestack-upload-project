@@ -91,6 +91,9 @@
 
       console.log('Dados do formulário:', { nome, telefone, arquivos: uploadResults });
 
+      // Limpar campos do formulário após o envio
+      document.getElementById('upload-form').reset();
+
       alert('Formulário enviado com sucesso!');
     });
   </script>
