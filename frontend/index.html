@@ -27,14 +27,14 @@
       margin-bottom: 20px;
     }
 
-    /* Formulário */
-    #info-form {
+    /* Formulário e campos de upload */
+    #info-form, #upload-form {
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 auto 20px auto;
     }
 
     /* Estilo dos labels */
@@ -45,7 +45,7 @@
     }
 
     /* Estilo dos inputs */
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
@@ -78,12 +78,12 @@
         font-size: 24px;
       }
 
-      #info-form {
+      #info-form, #upload-form {
         padding: 15px;
         width: 90%;
       }
 
-      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
         padding: 8px;
       }
 
@@ -96,6 +96,25 @@
 </head>
 <body>
   <h1>Formulário de Informações Pessoais</h1>
+
+  <!-- Campos de upload de documentos PDF -->
+  <form id="upload-form">
+    <label for="cpf">CPF:</label>
+    <input type="file" id="cpf" name="cpf" accept="application/pdf" required />
+
+    <label for="rg">RG:</label>
+    <input type="file" id="rg" name="rg" accept="application/pdf" required />
+
+    <label for="comprovante-residencia">Comprovante de Residência:</label>
+    <input type="file" id="comprovante-residencia" name="comprovante-residencia" accept="application/pdf" required />
+
+    <label for="outro-documento">Outro Documento:</label>
+    <input type="file" id="outro-documento" name="outro-documento" accept="application/pdf" required />
+
+    <button type="submit">Enviar Documentos</button>
+  </form>
+
+  <!-- Formulário de Informações Pessoais -->
   <form id="info-form">
     <label for="nome">Nome Completo:</label>
     <input type="text" id="nome" name="nome" required />
@@ -135,16 +154,7 @@
       <option value="nao">Não</option>
     </select>
 
-    <label for="cpf">CPF:</label>
-    <input type="file" id="cpf" name="cpf" accept="application/pdf" required />
-
-    <label for="rg">RG:</label>
-    <input type="file" id="rg" name="rg" accept="application/pdf" required />
-
-    <label for="comprovante-residencia">Comprovante de Residência:</label>
-    <input type="file" id="comprovante-residencia" name="comprovante-residencia" accept="application/pdf" required />
-
-    <button type="submit">Enviar</button>
+    <button type="submit">Enviar Informações Pessoais</button>
   </form>
 
   <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
@@ -152,6 +162,7 @@
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
 
+    // Enviar informações pessoais como arquivo de texto
     document.getElementById('info-form').addEventListener('submit', async (event) => {
       event.preventDefault();
 
@@ -184,14 +195,18 @@
           document.getElementById('status-message').textContent = 'Erro ao enviar o arquivo de informações pessoais.';
           console.error('Erro no upload:', error);
         });
+    });
 
-      // Subir os PDFs (CPF, RG, Comprovante de Residência) para Filestack
-      const pdfFiles = ['cpf', 'rg', 'comprovante-residencia'];
+    // Enviar PDFs
+    document.getElementById('upload-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const pdfFiles = ['cpf', 'rg', 'comprovante-residencia', 'outro-documento'];
 
       for (let fieldId of pdfFiles) {
         const fileInput = document.getElementById(fieldId);
         const file = fileInput.files[0];
-        
+
         if (file) {
           client.upload(file)
             .then(result => {
