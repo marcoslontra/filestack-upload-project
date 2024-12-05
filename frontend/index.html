@@ -16,7 +16,7 @@
     /* Corpo e fundo */
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f7f7f7; /* Fundo suave */
+      background-color: #f4f4f9;
       color: #333;
       padding: 40px;
       display: flex;
@@ -239,12 +239,87 @@
       </select>
     </div>
 
-    <button type="submit" id="submit-button">Enviar</button>
-    <div id="status-message" style="margin-top: 10px; text-align: center; font-size: 14px;"></div>
+    <button type="submit" id="submit-button">Enviar Arquivos</button>
   </form>
 
+  <div id="status-message" style="margin-top: 20px; font-weight: bold; color: #333;"></div>
+
   <script>
-    // Adicionar funcionalidade e ajustes para o formulário (como você já descreveu)
+    const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
+    const submitButton = document.getElementById('submit-button');
+    const uploadForm = document.getElementById('upload-form');
+
+    // Formatação do Telefone
+    document.getElementById('telefone').addEventListener('input', function (event) {
+      let input = event.target.value.replace(/\D/g, ''); // Remove tudo o que não for número
+      if (input.length <= 2) {
+        input = `(${input}`;
+      } else if (input.length <= 6) {
+        input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
+      } else {
+        input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
+      }
+      event.target.value = input;
+    });
+
+    // Função de envio de informações
+    async function uploadInfo() {
+      const formData = new FormData(uploadForm);
+      let textContent = '';
+      textContent += `Nome Completo: ${formData.get('nome')}\n`;
+      textContent += `Telefone: ${formData.get('telefone')}\n`;
+      textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
+      textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
+      textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
+      textContent += `Renda Bruta Casal: ${formData.get('renda-bruta')}\n`;
+      textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
+      textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
+
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
+
+      try {
+        await client.upload(file);
+      } catch (error) {
+        console.error('Erro ao enviar as informações pessoais:', error);
+        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
+        return;
+      }
+    }
+
+    // Enviar documentos PDF
+    uploadForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
+
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = 'Enviando arquivos...';
+
+      // Enviar as informações pessoais
+      await uploadInfo();
+
+      // Enviar documentos PDF
+      const formData = new FormData(uploadForm);
+      const files = [];
+      for (const [key, file] of formData.entries()) {
+        if (file instanceof File) {
+          files.push(file);
+        }
+      }
+
+      for (const file of files) {
+        try {
+          await client.upload(file);
+        } catch (error) {
+          console.error(`Erro no upload do arquivo ${file.name}:`, error);
+        }
+      }
+
+      // Limpar os campos após o sucesso do envio
+      uploadForm.reset();
+      statusMessage.textContent = 'Arquivos enviados com sucesso!';
+      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
+    });
   </script>
 </body>
 </html>
