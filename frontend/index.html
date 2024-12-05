@@ -30,8 +30,8 @@
       text-align: center;
       color: #333;
       margin-bottom: 30px;
-      font-size: 28px;
-      font-weight: 600;
+      font-size: 30px;
+      font-weight: 700;
     }
 
     /* Formulário e campos de upload */
@@ -45,7 +45,7 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 20px;
     }
 
     /* Estilo dos labels */
@@ -58,7 +58,7 @@
     }
 
     /* Estilo dos inputs e selects */
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
@@ -77,8 +77,8 @@
 
     /* Estilo dos botões de "Escolher arquivo" */
     input[type="file"] {
-      width: auto;
-      padding: 8px 15px;
+      width: 100%;
+      padding: 12px 15px;
       font-size: 14px;
       background-color: #e74c3c; /* Cor vermelha igual ao botão de enviar */
       color: white;
@@ -86,6 +86,334 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    input[type="file"]:hover {
+      background-color: #c0392b; /* Tom mais escuro de vermelho */
+    }
+
+    /* Estilo do botão "Enviar" */
+    button[type="submit"] {
+      padding: 12px 20px;
+      background-color: #e74c3c; /* Cor vermelha */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #c0392b; /* Tom mais escuro de vermelho */
+    }
+
+    button:disabled {
+      background-color: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    /* Design Responsivo */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      #info-form, #upload-form {
+        width: 100%;
+        padding: 20px;
+      }
+
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"], button[type="submit"] {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Formulário de Informações Pessoais</h1>
+
+  <form id="upload-form">
+    <!-- Arquivos de documentos -->
+    <div>
+      <label for="cpf">RG e CPF:</label>
+      <input type="file" id="cpf" name="cpf" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
+      <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
+      <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
+      <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="comprovante-renda">Comprovante de Renda:</label>
+      <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
+      <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="carteira-trabalho">Carteira de Trabalho:</label>
+      <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
+    </div>
+
+    <div>
+      <label for="extrato-fgts">Extrato FGTS:</label>
+      <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
+    </div>
+
+    <!-- Informações Pessoais -->
+    <div>
+      <label for="nome">Nome Completo:</label>
+      <input type="text" id="nome" name="nome" required />
+    </div>
+
+    <div>
+      <label for="telefone">Telefone:</label>
+      <input type="tel" id="telefone" name="telefone" required />
+    </div>
+
+    <div>
+      <label for="data-nascimento">Data de Nascimento:</label>
+      <input type="date" id="data-nascimento" name="data-nascimento" required />
+    </div>
+
+    <div>
+      <label for="estado-civil">Estado Civil:</label>
+      <select id="estado-civil" name="estado-civil" required>
+        <option value="">Selecione</option>
+        <option value="solteiro">Solteiro</option>
+        <option value="casado">Casado</option>
+        <option value="divorciado">Divorciado</option>
+        <option value="viuvo">Viúvo</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="possui-filhos">Possui Filhos:</label>
+      <select id="possui-filhos" name="possui-filhos" required>
+        <option value="">Selecione</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="renda-bruta">Renda Bruta Casal:</label>
+      <input type="text" id="renda-bruta" name="renda-bruta" required />
+    </div>
+
+    <div>
+      <label for="possui-imovel">Possui Imóvel:</label>
+      <select id="possui-imovel" name="possui-imovel" required>
+        <option value="">Selecione</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="anos-trabalho">Possui 3 anos de trabalho registrados em carteira de trabalho:</label>
+      <select id="anos-trabalho" name="anos-trabalho" required>
+        <option value="">Selecione</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </div>
+
+    <!-- Botão de Envio -->
+    <button type="submit" id="submit-button">Enviar Arquivos</button>
+  </form>
+
+  <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
+
+  <script>
+    const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
+    const submitButton = document.getElementById('submit-button');
+    const uploadForm = document.getElementById('upload-form');
+
+    // Formatação do Telefone
+    document.getElementById('telefone').addEventListener('input', function (event) {
+      let input = event.target.value.replace(/\D/g, ''); // Remove tudo o que não for número
+      if (input.length <= 2) {
+        input = `(${input}`;
+      } else if (input.length <= 6) {
+        input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
+      } else {
+        input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
+      }
+      event.target.value = input;
+    });
+
+    // Função de envio de informações
+    async function uploadInfo() {
+      const formData = new FormData(uploadForm);
+      let textContent = '';
+      textContent += `Nome Completo: ${formData.get('nome')}\n`;
+      textContent += `Telefone: ${formData.get('telefone')}\n`;
+      textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
+      textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
+      textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
+      textContent += `Renda Bruta Casal: ${formData.get('renda-bruta')}\n`;
+      textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
+      textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
+
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
+
+      try {
+        await client.upload(file);
+      } catch (error) {
+        console.error('Erro ao enviar as informações pessoais:', error);
+        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
+        return;
+      }
+    }
+
+    // Enviar documentos PDF
+    uploadForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
+
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = 'Enviando arquivos...';
+
+      // Enviar as informações pessoais
+      await uploadInfo();
+
+      // Enviar documentos PDF
+      const formData = new FormData(uploadForm);
+      const files = [];
+      for (const [key, file] of formData.entries()) {
+        if (file instanceof File) {
+          files.push(file);
+        }
+      }
+
+      for (const file of files) {
+        try {
+          await client.upload(file);
+        } catch (error) {
+          console.error(`Erro no upload do arquivo ${file.name}:`, error);
+        }
+      }
+
+      // Limpar os campos após o sucesso do envio
+      uploadForm.reset();
+      statusMessage.textContent = 'Arquivos enviados com sucesso!';
+      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Informações Pessoais</title>
+  <script src="https://static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Corpo e fundo */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    /* Formulário e campos de upload */
+    #info-form, #upload-form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Estilo dos labels */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Estilo dos inputs e selects */
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #fafafa;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    /* Estilo de hover nos inputs */
+    input[type="text"]:focus, input[type="tel"]:focus, input[type="date"]:focus, input[type="number"]:focus, select:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    /* Estilo dos botões de "Escolher arquivo" */
+    input[type="file"] {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 14px;
+      background-color: #e74c3c; /* Cor vermelha igual ao botão de enviar */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
     }
 
     input[type="file"]:hover {
