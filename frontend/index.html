@@ -183,7 +183,7 @@
 
     // Função para habilitar o botão após upload
     function enableSubmitButton() {
-      submitButton.disabled = false;
+      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
     }
 
     // Enviar informações pessoais como arquivo de texto
@@ -214,12 +214,15 @@
     // Enviar documentos PDF
     uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      submitButton.disabled = true; // Desabilita o botão enquanto o upload está em andamento
+      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
+
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = 'Enviando arquivos...';
 
       // Enviar as informações pessoais
       await uploadInfo();
 
-      // Enviar os documentos PDF
+      // Enviar documentos PDF
       const formData = new FormData(uploadForm);
       const files = [];
       for (const [key, file] of formData.entries()) {
@@ -228,7 +231,6 @@
         }
       }
 
-      // Envia todos os arquivos para Filestack
       for (const file of files) {
         try {
           await client.upload(file);
@@ -237,9 +239,9 @@
         }
       }
 
-      // Habilita o botão após o upload
+      // Reabilitar o botão após o upload
       enableSubmitButton();
-      document.getElementById('status-message').textContent = 'Arquivos enviados com sucesso!';
+      statusMessage.textContent = 'Arquivos enviados com sucesso!';
     });
   </script>
 </body>
