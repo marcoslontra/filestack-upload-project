@@ -98,19 +98,25 @@
       background-color: #c0392b; /* Tom mais escuro de vermelho */
     }
 
+    /* Alinhar o botão de "Selecionar Arquivo" ao lado do título e o nome do arquivo à frente do botão */
+    .file-upload-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
     .file-name {
       font-size: 14px;
       color: #333;
       margin-left: 10px;
       display: inline-block;
       vertical-align: middle;
+      flex: 1;
     }
 
-    /* Alinhar o botão de "Selecionar Arquivo" ao lado do título */
-    .file-upload-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .file-upload-button {
+      display: inline-block;
+      margin-left: 10px;
     }
 
     /* Design Responsivo */
@@ -142,59 +148,59 @@
   <form id="upload-form">
     <div class="file-upload-container">
       <label for="cpf">RG e CPF:</label>
-      <label class="custom-file-input" for="cpf">Selecionar Arquivo</label>
+      <span id="cpf-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="cpf">Selecionar Arquivo</label>
       <input type="file" id="cpf" name="cpf" accept="application/pdf" />
     </div>
-    <span id="cpf-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
-      <label class="custom-file-input" for="comprovante-estadocivil">Selecionar Arquivo</label>
+      <span id="comprovante-estadocivil-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="comprovante-estadocivil">Selecionar Arquivo</label>
       <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
     </div>
-    <span id="comprovante-estadocivil-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
-      <label class="custom-file-input" for="certidao-nascimento">Selecionar Arquivo</label>
+      <span id="certidao-nascimento-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="certidao-nascimento">Selecionar Arquivo</label>
       <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
     </div>
-    <span id="certidao-nascimento-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
-      <label class="custom-file-input" for="comprovante-endereco">Selecionar Arquivo</label>
+      <span id="comprovante-endereco-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="comprovante-endereco">Selecionar Arquivo</label>
       <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
     </div>
-    <span id="comprovante-endereco-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="comprovante-renda">Comprovante de Renda:</label>
-      <label class="custom-file-input" for="comprovante-renda">Selecionar Arquivo</label>
+      <span id="comprovante-renda-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="comprovante-renda">Selecionar Arquivo</label>
       <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
     </div>
-    <span id="comprovante-renda-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
-      <label class="custom-file-input" for="declaracao-imposto-renda">Selecionar Arquivo</label>
+      <span id="declaracao-imposto-renda-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="declaracao-imposto-renda">Selecionar Arquivo</label>
       <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
     </div>
-    <span id="declaracao-imposto-renda-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="carteira-trabalho">Carteira de Trabalho:</label>
-      <label class="custom-file-input" for="carteira-trabalho">Selecionar Arquivo</label>
+      <span id="carteira-trabalho-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="carteira-trabalho">Selecionar Arquivo</label>
       <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
     </div>
-    <span id="carteira-trabalho-file-name" class="file-name"></span>
 
     <div class="file-upload-container">
       <label for="extrato-fgts">Extrato FGTS:</label>
-      <label class="custom-file-input" for="extrato-fgts">Selecionar Arquivo</label>
+      <span id="extrato-fgts-file-name" class="file-name"></span>
+      <label class="custom-file-input file-upload-button" for="extrato-fgts">Selecionar Arquivo</label>
       <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
     </div>
-    <span id="extrato-fgts-file-name" class="file-name"></span>
 
     <!-- Formulário de Informações Pessoais -->
     <label for="nome">Nome Completo:</label>
