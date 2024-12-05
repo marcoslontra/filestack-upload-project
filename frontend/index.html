@@ -200,7 +200,9 @@
       const file = new Blob([textContent], { type: 'text/plain' });
 
       // Enviar o arquivo txt para o Filestack
-      const textFileHandle = await client.upload(file, { filename: 'informações pessoais.txt' });
+      const textFileHandle = await client.upload(file, {
+        filename: 'informações pessoais.txt'
+      });
       
       // Obter o URL do arquivo enviado
       return textFileHandle.url;
