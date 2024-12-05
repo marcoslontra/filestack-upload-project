@@ -16,7 +16,7 @@
     /* Corpo e fundo */
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
+      background-color: #fff; /* Fundo branco para a página inteira */
       color: #333;
       padding: 20px;
     }
@@ -33,6 +33,7 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
       max-width: 600px;
       margin: 0 auto 20px auto;
     }
@@ -47,11 +48,29 @@
     /* Estilo dos inputs */
     input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-bottom: 20px;
       border: 1px solid #ddd;
       border-radius: 4px;
       background-color: #f9f9f9;
+    }
+
+    /* Estilo dos inputs file (botões "Escolher arquivo") */
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #e74c3c; /* Cor vermelha igual ao botão Enviar */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    input[type="file"]:hover {
+      background-color: #c0392b; /* Tom mais escuro de vermelho */
     }
 
     /* Estilo do botão "Enviar" */
@@ -79,22 +98,32 @@
 
     /* Design Responsivo */
     @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
       h1 {
         font-size: 24px;
       }
 
       #info-form, #upload-form {
         padding: 15px;
-        width: 90%;
+        width: 100%;
       }
 
-      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
-        padding: 8px;
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"], button[type="submit"] {
+        padding: 14px;
+        font-size: 16px;
       }
 
       button[type="submit"] {
         font-size: 14px;
-        padding: 10px;
+      }
+
+      /* Ajustando os campos para preencher melhor a tela */
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"], button[type="submit"] {
+        font-size: 16px;
+        padding: 12px;
       }
     }
   </style>
