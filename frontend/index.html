@@ -104,11 +104,8 @@
 
   <!-- Campos de upload de documentos PDF -->
   <form id="upload-form">
-    <label for="cpf">CPF:</label>
+    <label for="cpf">RG e CPF:</label>
     <input type="file" id="cpf" name="cpf" accept="application/pdf" />
-
-    <label for="rg">RG:</label>
-    <input type="file" id="rg" name="rg" accept="application/pdf" />
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
     <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
@@ -136,10 +133,10 @@
     <input type="text" id="nome" name="nome" />
 
     <label for="telefone">Telefone:</label>
-    <input type="tel" id="telefone" name="telefone" />
+    <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" />
 
     <label for="data-nascimento">Data de Nascimento:</label>
-    <input type="date" id="data-nascimento" name="data-nascimento" />
+    <input type="date" id="data-nascimento" name="data-nascimento" maxlength="10" />
 
     <label for="estado-civil">Estado Civil:</label>
     <select id="estado-civil" name="estado-civil">
@@ -155,8 +152,8 @@
       <option value="nao">Não</option>
     </select>
 
-    <label for="renda-bruta">Renda Bruta Casal (R$):</label>
-    <input type="number" id="renda-bruta" name="renda-bruta" />
+    <label for="renda-bruta">Renda Bruta Casal:</label>
+    <input type="text" id="renda-bruta" name="renda-bruta" placeholder="R$ 0,00" />
 
     <label for="possui-imovel">Possui Imóvel:</label>
     <select id="possui-imovel" name="possui-imovel">
@@ -195,53 +192,46 @@
       textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
       textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
       textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
-      textContent += `Renda Bruta Casal: R$ ${formData.get('renda-bruta')}\n`;
+      textContent += `Renda Bruta Casal: ${formData.get('renda-bruta')}\n`;
       textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
-      textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
+      textContent += `Possui 3 anos de trabalho registrados: ${formData.get('anos-trabalho')}\n`;
 
-      const blob = new Blob([textContent], { type: 'text/plain' });
-      const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
-
-      try {
-        await client.upload(file);
-      } catch (error) {
-        console.error('Erro ao enviar as informações pessoais:', error);
-        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
-        return;
-      }
+      const file = new Blob([textContent], { type: 'text/plain' });
+      const fileHandle = await client.upload(file);
+      return fileHandle.url;
     }
 
-    // Enviar documentos PDF
+    // Manipulação do campo de telefone para formatar o número
+    const telefoneInput = document.getElementById('telefone');
+    telefoneInput.addEventListener('input', function(event) {
+      let value = event.target.value.replace(/\D/g, ''); // Remove qualquer coisa que não seja número
+      if (value.length > 2) {
+        value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7, 11)}`;
+      }
+      event.target.value = value;
+    });
+
+    // Manipulação da data de nascimento para limitar o ano a 4 caracteres
+    const nascimentoInput = document.getElementById('data-nascimento');
+    nascimentoInput.addEventListener('input', function(event) {
+      let value = event.target.value;
+      if (value.length === 10 && value.slice(-1) !== '/') {
+        event.target.value = value.slice(0, 10);
+      }
+    });
+
+    // Manipulação do campo de "Renda Bruta" para permitir pontos e vírgulas
+    const rendaInput = document.getElementById('renda-bruta');
+    rendaInput.addEventListener('input', function(event) {
+      let value = event.target.value.replace(/[^0-9.,]/g, ''); // Apenas números, vírgula e ponto
+      event.target.value = `R$ ${value}`;
+    });
+
+    // Enviar o formulário
     uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
-
-      const statusMessage = document.getElementById('status-message');
-      statusMessage.textContent = 'Enviando arquivos...';
-
-      // Enviar as informações pessoais
-      await uploadInfo();
-
-      // Enviar documentos PDF
-      const formData = new FormData(uploadForm);
-      const files = [];
-      for (const [key, file] of formData.entries()) {
-        if (file instanceof File) {
-          files.push(file);
-        }
-      }
-
-      for (const file of files) {
-        try {
-          await client.upload(file);
-        } catch (error) {
-          console.error(`Erro no upload do arquivo ${file.name}:`, error);
-        }
-      }
-
-      // Reabilitar o botão após o upload
-      enableSubmitButton();
-      statusMessage.textContent = 'Arquivos enviados com sucesso!';
+      const personalInfoFileUrl = await uploadInfo();
+      alert("Informações enviadas com sucesso!");
     });
   </script>
 </body>
