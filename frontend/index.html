@@ -104,11 +104,8 @@
 
   <!-- Campos de upload de documentos PDF -->
   <form id="upload-form">
-    <label for="cpf">CPF:</label>
-    <input type="file" id="cpf" name="cpf" accept="application/pdf" />
-
-    <label for="rg">RG:</label>
-    <input type="file" id="rg" name="rg" accept="application/pdf" />
+    <label for="rg-cpf">RG e CPF:</label>
+    <input type="file" id="rg-cpf" name="rg-cpf" accept="application/pdf" />
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
     <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
@@ -194,9 +191,9 @@
     document.querySelector('input[name="telefone"]').addEventListener('input', function(event) {
       let input = event.target.value;
       input = input.replace(/\D/g, ''); // Remove caracteres não numéricos
-      input = input.replace(/^(\d{2})(\d)/, '($1) $2'); // Formata o primeiro bloco (xx)
-      input = input.replace(/(\d{5})(\d)/, '$1-$2'); // Formata o segundo bloco (xxxxx-xxxx)
-      event.target.value = input;
+      input = input.replace(/^(\d{2})(\d)/, '($1) $2'); // Formata o DDD
+      input = input.replace(/(\d{5})(\d{1,4})/, '$1-$2'); // Formata o número
+      event.target.value = input.substring(0, 15); // Limita a 15 caracteres
     });
 
     // Enviar informações pessoais como arquivo de texto
