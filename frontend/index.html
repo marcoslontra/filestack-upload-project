@@ -69,6 +69,7 @@
       font-size: 18px; /* Aumentando o tamanho da fonte */
       cursor: pointer;
       transition: background-color 0.3s ease;
+      opacity: 1; /* Inicialmente visível */
     }
 
     button[type="submit"]:hover {
@@ -78,6 +79,11 @@
     button:disabled {
       background-color: #bdc3c7;
       cursor: not-allowed;
+    }
+
+    button.hidden {
+      opacity: 0; /* Torna o botão invisível */
+      pointer-events: none; /* Impede a interação com o botão */
     }
 
     /* Estilo dos botões de "Selecionar arquivo" */
@@ -250,6 +256,7 @@
       <option value="nao">Não</option>
     </select>
 
+    <!-- Botão de envio (invisível durante o upload) -->
     <button type="submit" id="submit-button">Enviar Arquivos</button>
   </form>
 
@@ -297,7 +304,7 @@
     // Enviar documentos PDF
     uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      submitButton.disabled = true; // Desabilita o botão enquanto o upload está em andamento
+      submitButton.classList.add('hidden'); // Torna o botão invisível durante o upload
 
       const statusMessage = document.getElementById('status-message');
       statusMessage.textContent = 'Enviando arquivos...';
@@ -329,7 +336,7 @@
       });
 
       statusMessage.textContent = 'Arquivos enviados com sucesso!';
-      submitButton.disabled = false; // Habilita novamente o botão de envio
+      submitButton.classList.remove('hidden'); // Torna o botão visível novamente
     });
   </script>
 </body>
