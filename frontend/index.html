@@ -39,13 +39,12 @@
 
     /* Estilo dos labels */
     label {
-      display: block;
-      margin-bottom: 5px;
       font-weight: bold;
+      margin-right: 10px;
     }
 
     /* Estilo dos inputs */
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
@@ -103,20 +102,21 @@
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      justify-content: space-between; /* Garante que o nome do arquivo e o botão estejam na mesma linha */
     }
 
     .file-name {
       font-size: 14px;
       color: #333;
       margin-left: 10px;
-      display: inline-block;
-      vertical-align: middle;
-      flex: 1;
+      flex-grow: 1; /* Permite que o nome do arquivo ocupe o espaço disponível */
+      word-wrap: break-word; /* Permite que o nome do arquivo quebre a linha se necessário */
     }
 
     .file-upload-button {
       display: inline-block;
       margin-left: 10px;
+      white-space: nowrap; /* Garante que o botão não quebre a linha */
     }
 
     /* Design Responsivo */
