@@ -101,7 +101,9 @@
     .file-name {
       font-size: 14px;
       color: #333;
-      margin-top: 5px;
+      margin-left: 10px;
+      display: inline-block;
+      vertical-align: middle;
     }
 
     /* Design Responsivo */
@@ -134,34 +136,42 @@
     <label for="cpf">RG e CPF:</label>
     <label class="custom-file-input" for="cpf">Selecionar Arquivo</label>
     <input type="file" id="cpf" name="cpf" accept="application/pdf" />
+    <span id="cpf-file-name" class="file-name"></span>
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
     <label class="custom-file-input" for="comprovante-estadocivil">Selecionar Arquivo</label>
     <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
+    <span id="comprovante-estadocivil-file-name" class="file-name"></span>
 
     <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
     <label class="custom-file-input" for="certidao-nascimento">Selecionar Arquivo</label>
     <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
+    <span id="certidao-nascimento-file-name" class="file-name"></span>
 
     <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
     <label class="custom-file-input" for="comprovante-endereco">Selecionar Arquivo</label>
     <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
+    <span id="comprovante-endereco-file-name" class="file-name"></span>
 
     <label for="comprovante-renda">Comprovante de Renda:</label>
     <label class="custom-file-input" for="comprovante-renda">Selecionar Arquivo</label>
     <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
+    <span id="comprovante-renda-file-name" class="file-name"></span>
 
     <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
     <label class="custom-file-input" for="declaracao-imposto-renda">Selecionar Arquivo</label>
     <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
+    <span id="declaracao-imposto-renda-file-name" class="file-name"></span>
 
     <label for="carteira-trabalho">Carteira de Trabalho:</label>
     <label class="custom-file-input" for="carteira-trabalho">Selecionar Arquivo</label>
     <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
+    <span id="carteira-trabalho-file-name" class="file-name"></span>
 
     <label for="extrato-fgts">Extrato FGTS:</label>
     <label class="custom-file-input" for="extrato-fgts">Selecionar Arquivo</label>
     <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
+    <span id="extrato-fgts-file-name" class="file-name"></span>
 
     <!-- Formulário de Informações Pessoais -->
     <label for="nome">Nome Completo:</label>
@@ -220,12 +230,9 @@
     // Atualiza o nome do arquivo após a seleção
     document.querySelectorAll('input[type="file"]').forEach(input => {
       input.addEventListener('change', function() {
-        const label = this.previousElementSibling;
-        const fileName = this.files.length > 0 ? this.files[0].name : 'Nenhum arquivo selecionado';
-        const fileNameElem = label.nextElementSibling || document.createElement('div');
-        fileNameElem.classList.add('file-name');
+        const fileName = this.files.length > 0 ? this.files[0].name : '';
+        const fileNameElem = document.getElementById(`${this.id}-file-name`);
         fileNameElem.textContent = fileName;
-        label.parentNode.appendChild(fileNameElem);
       });
     });
 
