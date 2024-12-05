@@ -240,7 +240,7 @@
     </select>
 
     <label for="renda-bruta">Renda Bruta Casal:</label>
-    <input type="text" id="renda-bruta" name="renda-bruta" required />
+    <input type="text" id="renda-bruta" name="renda-bruta" required value="R$ " />
 
     <label for="possui-imovel">Possui Imóvel:</label>
     <select id="possui-imovel" name="possui-imovel" required>
@@ -282,10 +282,11 @@
 
     // Adicionar "R$" no campo de renda bruta
     document.getElementById('renda-bruta').addEventListener('input', function(event) {
-      let value = event.target.value;
-      value = value.replace(/\D/g, ''); // Remove qualquer não numérico
+      let value = event.target.value.replace(/\D/g, ''); // Remove qualquer não numérico
       if (value) {
         event.target.value = 'R$ ' + parseFloat(value).toLocaleString();
+      } else {
+        event.target.value = 'R$ ';
       }
     });
 
