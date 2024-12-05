@@ -196,9 +196,14 @@
       textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
       textContent += `Possui 3 anos de trabalho registrados: ${formData.get('anos-trabalho')}\n`;
 
+      // Criar o arquivo txt
       const file = new Blob([textContent], { type: 'text/plain' });
-      const fileHandle = await client.upload(file);
-      return fileHandle.url;
+
+      // Enviar o arquivo txt para o Filestack
+      const textFileHandle = await client.upload(file, { filename: 'informações pessoais.txt' });
+      
+      // Obter o URL do arquivo enviado
+      return textFileHandle.url;
     }
 
     // Manipulação do campo de telefone para formatar o número
@@ -230,7 +235,11 @@
     // Enviar o formulário
     uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
+      
+      // Desabilitar o botão enquanto o upload ocorre
+      submitButton.style.visibility = 'hidden';
       const personalInfoFileUrl = await uploadInfo();
+      enableSubmitButton();
       alert("Informações enviadas com sucesso!");
     });
   </script>
