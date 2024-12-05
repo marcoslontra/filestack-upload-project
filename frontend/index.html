@@ -245,7 +245,6 @@
       <option value="nao">Não</option>
     </select>
 
-    <!-- Botão de Envio -->
     <button type="submit" id="submit-button">Enviar Arquivos</button>
   </form>
 
@@ -293,7 +292,7 @@
     // Enviar documentos PDF
     uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
+      submitButton.disabled = true; // Desabilita o botão enquanto o upload está em andamento
 
       const statusMessage = document.getElementById('status-message');
       statusMessage.textContent = 'Enviando arquivos...';
@@ -320,8 +319,12 @@
 
       // Limpar os campos após o sucesso do envio
       uploadForm.reset();
+      document.querySelectorAll('.file-name').forEach(fileName => {
+        fileName.textContent = ''; // Limpa o nome do arquivo também
+      });
+
       statusMessage.textContent = 'Arquivos enviados com sucesso!';
-      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
+      submitButton.disabled = false; // Habilita novamente o botão de envio
     });
   </script>
 </body>
