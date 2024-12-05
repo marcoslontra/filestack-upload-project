@@ -27,14 +27,14 @@
       margin-bottom: 20px;
     }
 
-    /* Formulário e campos de upload */
-    #info-form, #upload-form {
+    /* Formulário */
+    #info-form {
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       max-width: 600px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto;
     }
 
     /* Estilo dos labels */
@@ -45,13 +45,18 @@
     }
 
     /* Estilo dos inputs */
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
       border: 1px solid #ddd;
       border-radius: 4px;
       background-color: #f9f9f9;
+    }
+
+    /* Estilo do campo de Renda Bruta */
+    input[type="text"].renda-bruta {
+      padding-left: 15px;
     }
 
     /* Estilo do botão "Enviar" */
@@ -72,8 +77,8 @@
       background-color: #c0392b; /* Tom mais escuro de vermelho */
     }
 
-    button:disabled {
-      background-color: #bdc3c7;
+    button[type="submit"]:disabled {
+      background-color: #ccc;
       cursor: not-allowed;
     }
 
@@ -83,12 +88,12 @@
         font-size: 24px;
       }
 
-      #info-form, #upload-form {
+      #info-form {
         padding: 15px;
         width: 90%;
       }
 
-      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
         padding: 8px;
       }
 
@@ -101,48 +106,18 @@
 </head>
 <body>
   <h1>Formulário de Informações Pessoais</h1>
-
-  <!-- Campos de upload de documentos PDF -->
-  <form id="upload-form">
-    <label for="cpf">CPF:</label>
-    <input type="file" id="cpf" name="cpf" accept="application/pdf" />
-
-    <label for="rg">RG:</label>
-    <input type="file" id="rg" name="rg" accept="application/pdf" />
-
-    <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
-    <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
-
-    <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
-    <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
-
-    <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
-    <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
-
-    <label for="comprovante-renda">Comprovante de Renda:</label>
-    <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
-
-    <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
-    <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
-
-    <label for="carteira-trabalho">Carteira de Trabalho:</label>
-    <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
-
-    <label for="extrato-fgts">Extrato FGTS:</label>
-    <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
-
-    <!-- Formulário de Informações Pessoais -->
-    <label for="nome">Nome Completo:</label>
-    <input type="text" id="nome" name="nome" />
+  <form id="info-form">
+    <label for="cpf">RG e CPF:</label>
+    <input type="text" id="cpf" name="cpf" required />
 
     <label for="telefone">Telefone:</label>
-    <input type="tel" id="telefone" name="telefone" />
+    <input type="tel" id="telefone" name="telefone" placeholder="(xx) xxxxx-xxxx" required />
 
     <label for="data-nascimento">Data de Nascimento:</label>
-    <input type="date" id="data-nascimento" name="data-nascimento" />
+    <input type="date" id="data-nascimento" name="data-nascimento" required />
 
     <label for="estado-civil">Estado Civil:</label>
-    <select id="estado-civil" name="estado-civil">
+    <select id="estado-civil" name="estado-civil" required>
       <option value="solteiro">Solteiro</option>
       <option value="casado">Casado</option>
       <option value="divorciado">Divorciado</option>
@@ -150,47 +125,42 @@
     </select>
 
     <label for="possui-filhos">Possui Filhos:</label>
-    <select id="possui-filhos" name="possui-filhos">
+    <select id="possui-filhos" name="possui-filhos" required>
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
-    <label for="renda-bruta">Renda Bruta Casal (R$):</label>
-    <input type="number" id="renda-bruta" name="renda-bruta" />
+    <label for="renda-bruta">Renda Bruta Casal:</label>
+    <input type="text" id="renda-bruta" name="renda-bruta" class="renda-bruta" placeholder="R$" required />
 
     <label for="possui-imovel">Possui Imóvel:</label>
-    <select id="possui-imovel" name="possui-imovel">
+    <select id="possui-imovel" name="possui-imovel" required>
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
     <label for="anos-trabalho">Possui 3 anos de trabalho registrados em carteira de trabalho:</label>
-    <select id="anos-trabalho" name="anos-trabalho">
+    <select id="anos-trabalho" name="anos-trabalho" required>
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
-    <!-- Botão de Envio -->
-    <button type="submit" id="submit-button">Enviar Arquivos</button>
+    <button type="submit">Enviar Arquivos</button>
   </form>
 
   <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
-    const submitButton = document.getElementById('submit-button');
-    const uploadForm = document.getElementById('upload-form');
 
-    // Função para habilitar o botão após upload
-    function enableSubmitButton() {
-      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
-    }
+    document.getElementById('info-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-    // Enviar informações pessoais como arquivo de texto
-    async function uploadInfo() {
-      const formData = new FormData(uploadForm);
+      const formData = new FormData(event.target);
+
+      // Criando o conteúdo do arquivo de texto
       let textContent = '';
-      textContent += `Nome Completo: ${formData.get('nome')}\n`;
+      textContent += `RG e CPF: ${formData.get('cpf')}\n`;
       textContent += `Telefone: ${formData.get('telefone')}\n`;
       textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
       textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
@@ -199,49 +169,26 @@
       textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
       textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
 
+      // Criando um Blob com os dados em texto
       const blob = new Blob([textContent], { type: 'text/plain' });
+
+      // Criando um arquivo a partir do Blob
       const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
 
-      try {
-        await client.upload(file);
-      } catch (error) {
-        console.error('Erro ao enviar as informações pessoais:', error);
-        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
-        return;
-      }
-    }
-
-    // Enviar documentos PDF
-    uploadForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
-
-      const statusMessage = document.getElementById('status-message');
-      statusMessage.textContent = 'Enviando arquivos...';
-
-      // Enviar as informações pessoais
-      await uploadInfo();
-
-      // Enviar documentos PDF
-      const formData = new FormData(uploadForm);
-      const files = [];
-      for (const [key, file] of formData.entries()) {
-        if (file instanceof File) {
-          files.push(file);
-        }
-      }
-
-      for (const file of files) {
-        try {
-          await client.upload(file);
-        } catch (error) {
-          console.error(`Erro no upload do arquivo ${file.name}:`, error);
-        }
-      }
-
-      // Reabilitar o botão após o upload
-      enableSubmitButton();
-      statusMessage.textContent = 'Arquivos enviados com sucesso!';
+      // Subir o arquivo para Filestack
+      document.querySelector('button[type="submit"]').style.display = 'none'; // Torna o botão invisível enquanto envia
+      client.upload(file)
+        .then(result => {
+          document.getElementById('status-message').textContent = 'Arquivo enviado com sucesso!';
+          console.log('Arquivo enviado para Filestack:', result);
+        })
+        .catch(error => {
+          document.getElementById('status-message').textContent = 'Erro ao enviar o arquivo.';
+          console.error('Erro no upload:', error);
+        })
+        .finally(() => {
+          document.querySelector('button[type="submit"]').style.display = 'block'; // Torna o botão visível novamente
+        });
     });
   </script>
 </body>
