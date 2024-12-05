@@ -16,7 +16,7 @@
     /* Corpo e fundo */
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
+      background-color: white; /* Fundo branco */
       color: #333;
       padding: 20px;
     }
@@ -32,7 +32,6 @@
       background-color: transparent; /* Remover fundo do formulário */
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       max-width: 600px;
       margin: 0 auto 20px auto;
     }
@@ -49,18 +48,20 @@
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
       background-color: #f9f9f9;
+      border: none; /* Remover borda */
+      border-radius: 4px;
     }
 
     input[type="file"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
-      border: 1px solid #ddd;
+      background-color: #e74c3c; /* Cor vermelha para os botões de "Escolher Arquivo" */
+      color: white; /* Cor do texto no botão */
+      border: none; /* Remover borda */
       border-radius: 4px;
-      background-color: transparent; /* Remover fundo do input file */
+      cursor: pointer; /* Cursor de clique */
     }
 
     /* Estilo do botão "Enviar" */
