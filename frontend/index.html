@@ -198,7 +198,7 @@
     // Formatação da Renda Bruta Casal
     document.getElementById('renda-bruta').addEventListener('input', function (event) {
       let input = event.target.value;
-      // Verifica se o "R$" já foi inserido
+      // Adiciona o R$ no início
       if (!input.startsWith('R$')) {
         input = 'R$ ' + input;
       }
