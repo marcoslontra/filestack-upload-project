@@ -54,6 +54,28 @@
       background-color: #f9f9f9;
     }
 
+    /* Estilo do botão "Selecionar arquivo" */
+    input[type="file"] {
+      font-size: 12px;
+      padding: 5px 10px;
+      border: none;
+      background-color: #e74c3c; /* Cor vermelha */
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="file"]:hover {
+      background-color: #c0392b;
+    }
+
+    /* Estilo da mensagem "Nenhum arquivo selecionado" */
+    .file-status {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+
     /* Estilo do botão "Enviar" */
     button[type="submit"] {
       display: block;
@@ -106,27 +128,35 @@
   <form id="upload-form">
     <label for="cpf">RG e CPF:</label>
     <input type="file" id="cpf" name="cpf" accept="application/pdf" />
+    <div class="file-status" id="cpf-status">Nenhum arquivo selecionado</div>
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
     <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
+    <div class="file-status" id="comprovante-estadocivil-status">Nenhum arquivo selecionado</div>
 
     <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
     <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
+    <div class="file-status" id="certidao-nascimento-status">Nenhum arquivo selecionado</div>
 
     <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
     <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
+    <div class="file-status" id="comprovante-endereco-status">Nenhum arquivo selecionado</div>
 
     <label for="comprovante-renda">Comprovante de Renda:</label>
     <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
+    <div class="file-status" id="comprovante-renda-status">Nenhum arquivo selecionado</div>
 
     <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
     <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
+    <div class="file-status" id="declaracao-imposto-renda-status">Nenhum arquivo selecionado</div>
 
     <label for="carteira-trabalho">Carteira de Trabalho:</label>
     <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
+    <div class="file-status" id="carteira-trabalho-status">Nenhum arquivo selecionado</div>
 
     <label for="extrato-fgts">Extrato FGTS:</label>
     <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
+    <div class="file-status" id="extrato-fgts-status">Nenhum arquivo selecionado</div>
 
     <!-- Formulário de Informações Pessoais -->
     <label for="nome">Nome Completo:</label>
@@ -182,45 +212,22 @@
     const submitButton = document.getElementById('submit-button');
     const uploadForm = document.getElementById('upload-form');
 
-    // Formatação do Telefone
-    document.getElementById('telefone').addEventListener('input', function (event) {
-      let input = event.target.value.replace(/\D/g, ''); // Remove tudo o que não for número
-      if (input.length <= 2) {
-        input = `(${input}`;
-      } else if (input.length <= 6) {
-        input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
+    // Atualiza a mensagem quando um arquivo é selecionado
+    function updateFileStatus(inputId, statusId) {
+      const inputElement = document.getElementById(inputId);
+      const statusElement = document.getElementById(statusId);
+      if (inputElement.files.length > 0) {
+        statusElement.textContent = inputElement.files[0].name;
       } else {
-        input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
+        statusElement.textContent = 'Nenhum arquivo selecionado';
       }
-      event.target.value = input;
-    });
+    }
 
-    // Formatação da Renda Bruta Casal
-    document.getElementById('renda-bruta').addEventListener('input', function (event) {
-      let input = event.target.value;
-      // Adiciona o R$ no início
-      if (!input.startsWith('R$')) {
-        input = 'R$ ' + input;
-      }
-      // Permite apenas números, ponto ou vírgula
-      input = input.replace(/[^\d,\.]/g, '');
-      // Corrige múltiplos pontos ou vírgulas
-      if (input.indexOf('.') !== input.lastIndexOf('.')) {
-        input = input.slice(0, input.lastIndexOf('.')) + input.slice(input.lastIndexOf('.') + 1);
-      }
-      if (input.indexOf(',') !== input.lastIndexOf(',')) {
-        input = input.slice(0, input.lastIndexOf(',')) + input.slice(input.lastIndexOf(',') + 1);
-      }
-      event.target.value = input;
-    });
-
-    // Limitação de 4 dígitos no ano da Data de Nascimento
-    document.getElementById('data-nascimento').addEventListener('input', function (event) {
-      let value = event.target.value;
-      let parts = value.split('-');
-      if (parts.length === 3 && parts[0].length === 4) {
-        event.target.value = value.slice(0, 10); // Limita a 4 dígitos no ano
-      }
+    // Atualiza a mensagem de status para cada input de arquivo
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+      input.addEventListener('change', () => {
+        updateFileStatus(input.id, input.id + '-status');
+      });
     });
 
     // Função de envio de informações
