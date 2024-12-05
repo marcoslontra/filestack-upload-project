@@ -54,24 +54,6 @@
       background-color: #f9f9f9;
     }
 
-    /* Estilo do botão "Selecionar Arquivo" */
-    input[type="file"] {
-      width: auto;
-      padding: 10px;
-      margin-right: 10px;
-      background-color: #e74c3c; /* Cor vermelha */
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    input[type="file"]:hover {
-      background-color: #c0392b; /* Tom mais escuro de vermelho */
-    }
-
     /* Estilo do botão "Enviar" */
     button[type="submit"] {
       display: block;
@@ -95,6 +77,33 @@
       cursor: not-allowed;
     }
 
+    /* Estilo dos botões de "Selecionar arquivo" */
+    input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-input {
+      display: inline-block;
+      padding: 8px 20px;
+      background-color: #e74c3c; /* Cor vermelha */
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: background-color 0.3s ease;
+    }
+
+    .custom-file-input:hover {
+      background-color: #c0392b; /* Tom mais escuro de vermelho */
+    }
+
+    .file-name {
+      font-size: 14px;
+      color: #333;
+      margin-top: 5px;
+    }
+
     /* Design Responsivo */
     @media (max-width: 768px) {
       h1 {
@@ -106,7 +115,7 @@
         width: 90%;
       }
 
-      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, input[type="file"] {
+      input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select {
         padding: 8px;
       }
 
@@ -123,52 +132,36 @@
   <!-- Campos de upload de documentos PDF -->
   <form id="upload-form">
     <label for="cpf">RG e CPF:</label>
-    <div>
-      <input type="file" id="cpf" name="cpf" accept="application/pdf" />
-      <span id="cpf-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="cpf">Selecionar Arquivo</label>
+    <input type="file" id="cpf" name="cpf" accept="application/pdf" />
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
-    <div>
-      <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
-      <span id="comprovante-estadocivil-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="comprovante-estadocivil">Selecionar Arquivo</label>
+    <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
 
     <label for="certidao-nascimento">Certidão de Nascimento Menores de 18:</label>
-    <div>
-      <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
-      <span id="certidao-nascimento-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="certidao-nascimento">Selecionar Arquivo</label>
+    <input type="file" id="certidao-nascimento" name="certidao-nascimento" accept="application/pdf" />
 
     <label for="comprovante-endereco">Comprovante de Endereço Atual:</label>
-    <div>
-      <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
-      <span id="comprovante-endereco-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="comprovante-endereco">Selecionar Arquivo</label>
+    <input type="file" id="comprovante-endereco" name="comprovante-endereco" accept="application/pdf" />
 
     <label for="comprovante-renda">Comprovante de Renda:</label>
-    <div>
-      <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
-      <span id="comprovante-renda-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="comprovante-renda">Selecionar Arquivo</label>
+    <input type="file" id="comprovante-renda" name="comprovante-renda" accept="application/pdf" />
 
     <label for="declaracao-imposto-renda">Declaração de Imposto de Renda:</label>
-    <div>
-      <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
-      <span id="declaracao-imposto-renda-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="declaracao-imposto-renda">Selecionar Arquivo</label>
+    <input type="file" id="declaracao-imposto-renda" name="declaracao-imposto-renda" accept="application/pdf" />
 
     <label for="carteira-trabalho">Carteira de Trabalho:</label>
-    <div>
-      <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
-      <span id="carteira-trabalho-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="carteira-trabalho">Selecionar Arquivo</label>
+    <input type="file" id="carteira-trabalho" name="carteira-trabalho" accept="application/pdf" />
 
     <label for="extrato-fgts">Extrato FGTS:</label>
-    <div>
-      <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
-      <span id="extrato-fgts-status">Nenhum arquivo selecionado</span>
-    </div>
+    <label class="custom-file-input" for="extrato-fgts">Selecionar Arquivo</label>
+    <input type="file" id="extrato-fgts" name="extrato-fgts" accept="application/pdf" />
 
     <!-- Formulário de Informações Pessoais -->
     <label for="nome">Nome Completo:</label>
@@ -220,22 +213,80 @@
   <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
-    // Atualização do status do arquivo
-    const inputsFile = document.querySelectorAll('input[type="file"]');
-    inputsFile.forEach(input => {
-      const statusSpan = document.getElementById(input.id + '-status');
-      input.addEventListener('change', () => {
-        statusSpan.textContent = input.files.length ? `${input.files.length} arquivo(s) selecionado(s)` : 'Nenhum arquivo selecionado';
-      });
-    });
-
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
     const submitButton = document.getElementById('submit-button');
     const uploadForm = document.getElementById('upload-form');
 
-    // Função de envio de informações (já fornecida no código anterior)
-    // ... (não há mudanças no restante da lógica)
+    // Atualiza o nome do arquivo após a seleção
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+      input.addEventListener('change', function() {
+        const label = this.previousElementSibling;
+        const fileName = this.files.length > 0 ? this.files[0].name : 'Nenhum arquivo selecionado';
+        const fileNameElem = label.nextElementSibling || document.createElement('div');
+        fileNameElem.classList.add('file-name');
+        fileNameElem.textContent = fileName;
+        label.parentNode.appendChild(fileNameElem);
+      });
+    });
 
+    // Função de envio de informações
+    async function uploadInfo() {
+      const formData = new FormData(uploadForm);
+      let textContent = '';
+      textContent += `Nome Completo: ${formData.get('nome')}\n`;
+      textContent += `Telefone: ${formData.get('telefone')}\n`;
+      textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
+      textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
+      textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
+      textContent += `Renda Bruta Casal: ${formData.get('renda-bruta')}\n`;
+      textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
+      textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
+
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
+
+      try {
+        await client.upload(file);
+      } catch (error) {
+        console.error('Erro ao enviar as informações pessoais:', error);
+        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
+        return;
+      }
+    }
+
+    // Enviar documentos PDF
+    uploadForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
+
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = 'Enviando arquivos...';
+
+      // Enviar as informações pessoais
+      await uploadInfo();
+
+      // Enviar documentos PDF
+      const formData = new FormData(uploadForm);
+      const files = [];
+      for (const [key, file] of formData.entries()) {
+        if (file instanceof File) {
+          files.push(file);
+        }
+      }
+
+      for (const file of files) {
+        try {
+          await client.upload(file);
+        } catch (error) {
+          console.error(`Erro no upload do arquivo ${file.name}:`, error);
+        }
+      }
+
+      // Limpar os campos após o sucesso do envio
+      uploadForm.reset();
+      statusMessage.textContent = 'Arquivos enviados com sucesso!';
+      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
+    });
   </script>
 </body>
 </html>
