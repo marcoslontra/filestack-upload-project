@@ -104,8 +104,8 @@
 
   <!-- Campos de upload de documentos PDF -->
   <form id="upload-form">
-    <label for="rg-cpf">RG e CPF:</label>
-    <input type="file" id="rg-cpf" name="rg-cpf" accept="application/pdf" />
+    <label for="cpf">RG e CPF:</label>
+    <input type="file" id="cpf" name="cpf" accept="application/pdf" />
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
     <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
@@ -154,8 +154,8 @@
       <option value="nao">Não</option>
     </select>
 
-    <label for="renda-bruta">Renda Bruta Casal:</label>
-    <input type="text" id="renda-bruta" name="renda-bruta" required placeholder="R$ 0,00" />
+    <label for="renda-bruta">Renda Bruta Casal (R$):</label>
+    <input type="text" id="renda-bruta" name="renda-bruta" required />
 
     <label for="possui-imovel">Possui Imóvel:</label>
     <select id="possui-imovel" name="possui-imovel" required>
@@ -182,26 +182,32 @@
     const submitButton = document.getElementById('submit-button');
     const uploadForm = document.getElementById('upload-form');
 
-    // Função para habilitar o botão após upload
-    function enableSubmitButton() {
-      submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
-    }
-
-    // Função para formatar o telefone
-    document.querySelector('input[name="telefone"]').addEventListener('input', function(event) {
-      let input = event.target.value;
-      input = input.replace(/\D/g, ''); // Remove caracteres não numéricos
-      input = input.replace(/^(\d{2})(\d)/, '($1) $2'); // Formata o DDD
-      input = input.replace(/(\d{5})(\d{1,4})/, '$1-$2'); // Formata o número
-      event.target.value = input.substring(0, 15); // Limita a 15 caracteres
+    // Formatação do Telefone
+    document.getElementById('telefone').addEventListener('input', function (event) {
+      let input = event.target.value.replace(/\D/g, ''); // Remove tudo o que não for número
+      if (input.length <= 2) {
+        input = `(${input}`;
+      } else if (input.length <= 6) {
+        input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
+      } else {
+        input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
+      }
+      event.target.value = input;
     });
 
-    // Função para formatar o campo de Renda Bruta Casal
-    document.querySelector('input[name="renda-bruta"]').addEventListener('input', function(event) {
+    // Formatação da Renda Bruta Casal
+    document.getElementById('renda-bruta').addEventListener('input', function (event) {
       let input = event.target.value;
-      input = input.replace(/\D/g, ''); // Remove qualquer não número
-      input = input.replace(/(\d)(\d{2})$/, '$1.$2'); // Adiciona ponto para separação de centavos
-      event.target.value = `R$ ${input}`;
+      // Remove tudo o que não for número, ponto ou vírgula
+      input = input.replace(/[^\d,\.]/g, '');
+      // Permite apenas um ponto ou vírgula
+      if (input.indexOf('.') !== input.lastIndexOf('.')) {
+        input = input.slice(0, input.lastIndexOf('.')) + input.slice(input.lastIndexOf('.') + 1);
+      }
+      if (input.indexOf(',') !== input.lastIndexOf(',')) {
+        input = input.slice(0, input.lastIndexOf(',')) + input.slice(input.lastIndexOf(',') + 1);
+      }
+      event.target.value = input;
     });
 
     // Enviar informações pessoais como arquivo de texto
@@ -213,7 +219,7 @@
       textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
       textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
       textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
-      textContent += `Renda Bruta Casal: ${formData.get('renda-bruta')}\n`;
+      textContent += `Renda Bruta Casal: R$ ${formData.get('renda-bruta')}\n`;
       textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
       textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
 
@@ -258,7 +264,7 @@
       }
 
       // Reabilitar o botão após o upload
-      enableSubmitButton();
+      submitButton.style.visibility = 'visible';
       statusMessage.textContent = 'Arquivos enviados com sucesso!';
     });
   </script>
