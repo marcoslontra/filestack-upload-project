@@ -104,8 +104,11 @@
 
   <!-- Campos de upload de documentos PDF -->
   <form id="upload-form">
-    <label for="rg-cpf">RG e CPF:</label>
-    <input type="file" id="rg-cpf" name="rg-cpf" accept="application/pdf" />
+    <label for="cpf">CPF:</label>
+    <input type="file" id="cpf" name="cpf" accept="application/pdf" />
+
+    <label for="rg">RG:</label>
+    <input type="file" id="rg" name="rg" accept="application/pdf" />
 
     <label for="comprovante-estadocivil">Comprovante de Estado Civil:</label>
     <input type="file" id="comprovante-estadocivil" name="comprovante-estadocivil" accept="application/pdf" />
@@ -130,16 +133,17 @@
 
     <!-- Formulário de Informações Pessoais -->
     <label for="nome">Nome Completo:</label>
-    <input type="text" id="nome" name="nome" />
+    <input type="text" id="nome" name="nome" required />
 
     <label for="telefone">Telefone:</label>
-    <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" />
+    <input type="tel" id="telefone" name="telefone" required />
 
     <label for="data-nascimento">Data de Nascimento:</label>
-    <input type="date" id="data-nascimento" name="data-nascimento" maxlength="10" />
+    <input type="text" id="data-nascimento" name="data-nascimento" placeholder="DD/MM/YYYY" required />
 
     <label for="estado-civil">Estado Civil:</label>
-    <select id="estado-civil" name="estado-civil">
+    <select id="estado-civil" name="estado-civil" required>
+      <option value="">Selecione</option>
       <option value="solteiro">Solteiro</option>
       <option value="casado">Casado</option>
       <option value="divorciado">Divorciado</option>
@@ -147,22 +151,25 @@
     </select>
 
     <label for="possui-filhos">Possui Filhos:</label>
-    <select id="possui-filhos" name="possui-filhos">
+    <select id="possui-filhos" name="possui-filhos" required>
+      <option value="">Selecione</option>
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
-    <label for="renda-bruta">Renda Bruta Casal:</label>
-    <input type="text" id="renda-bruta" name="renda-bruta" placeholder="R$ 0,00" />
+    <label for="renda-bruta">Renda Bruta Casal (R$):</label>
+    <input type="number" id="renda-bruta" name="renda-bruta" required />
 
     <label for="possui-imovel">Possui Imóvel:</label>
-    <select id="possui-imovel" name="possui-imovel">
+    <select id="possui-imovel" name="possui-imovel" required>
+      <option value="">Selecione</option>
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
 
     <label for="anos-trabalho">Possui 3 anos de trabalho registrados em carteira de trabalho:</label>
-    <select id="anos-trabalho" name="anos-trabalho">
+    <select id="anos-trabalho" name="anos-trabalho" required>
+      <option value="">Selecione</option>
       <option value="sim">Sim</option>
       <option value="nao">Não</option>
     </select>
@@ -183,6 +190,15 @@
       submitButton.style.visibility = 'visible'; // Torna o botão visível novamente
     }
 
+    // Função para formatar o telefone
+    document.querySelector('input[name="telefone"]').addEventListener('input', function(event) {
+      let input = event.target.value;
+      input = input.replace(/\D/g, ''); // Remove caracteres não numéricos
+      input = input.replace(/^(\d{2})(\d)/, '($1) $2'); // Formata o primeiro bloco (xx)
+      input = input.replace(/(\d{5})(\d)/, '$1-$2'); // Formata o segundo bloco (xxxxx-xxxx)
+      event.target.value = input;
+    });
+
     // Enviar informações pessoais como arquivo de texto
     async function uploadInfo() {
       const formData = new FormData(uploadForm);
@@ -192,16 +208,23 @@
       textContent += `Data de Nascimento: ${formData.get('data-nascimento')}\n`;
       textContent += `Estado Civil: ${formData.get('estado-civil')}\n`;
       textContent += `Possui Filhos: ${formData.get('possui-filhos')}\n`;
-      textContent += `Renda Bruta Casal: ${formData.get('renda-bruta')}\n`;
+      textContent += `Renda Bruta Casal: R$ ${formData.get('renda-bruta')}\n`;
       textContent += `Possui Imóvel: ${formData.get('possui-imovel')}\n`;
-      textContent += `Possui 3 anos de trabalho registrados: ${formData.get('anos-trabalho')}\n`;
+      textContent += `Possui 3 anos de trabalho registrados em carteira de trabalho: ${formData.get('anos-trabalho')}\n`;
 
-      const file = new Blob([textContent], { type: 'text/plain' });
-      const fileHandle = await client.upload(file);
-      return fileHandle.url;
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const file = new File([blob], 'informacoes_pessoais.txt', { type: 'text/plain' });
+
+      try {
+        await client.upload(file);
+      } catch (error) {
+        console.error('Erro ao enviar as informações pessoais:', error);
+        document.getElementById('status-message').textContent = 'Erro ao enviar as informações pessoais.';
+        return;
+      }
     }
 
-    // Enviar o formulário
+    // Enviar documentos PDF
     uploadForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       submitButton.style.visibility = 'hidden'; // Torna o botão invisível enquanto o upload está em andamento
@@ -210,7 +233,7 @@
       statusMessage.textContent = 'Enviando arquivos...';
 
       // Enviar as informações pessoais
-      const personalInfoFileUrl = await uploadInfo();
+      await uploadInfo();
 
       // Enviar documentos PDF
       const formData = new FormData(uploadForm);
