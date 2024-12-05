@@ -80,8 +80,8 @@
       width: auto;
       padding: 8px 15px;
       font-size: 14px;
-      background-color: #3498db;
-      color: #fff;
+      background-color: #e74c3c; /* Cor vermelha igual ao botão de enviar */
+      color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
@@ -89,7 +89,7 @@
     }
 
     input[type="file"]:hover {
-      background-color: #2980b9;
+      background-color: #c0392b; /* Tom mais escuro de vermelho */
     }
 
     /* Estilo do botão "Enviar" */
@@ -239,10 +239,11 @@
       </select>
     </div>
 
+    <!-- Botão de Envio -->
     <button type="submit" id="submit-button">Enviar Arquivos</button>
   </form>
 
-  <div id="status-message" style="margin-top: 20px; font-weight: bold; color: #333;"></div>
+  <div id="status-message" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
     const client = filestack.init('ApgANrOfTOWJBXY2mERX1z'); // Sua chave API
